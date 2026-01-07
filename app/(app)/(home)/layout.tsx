@@ -13,6 +13,7 @@ export default async function layout({ children }: { children: React.ReactNode }
   const data = await payload.find({
     collection: "categories",
     depth: 1,
+    pagination:false,
     where: {
       parent: {
         exists: false

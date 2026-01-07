@@ -6,7 +6,7 @@ interface Props{
 export default function Categories({data}:Props) {
     console.log(data,"TESES")
   return (
-    <div className="mt-4 flex gap-2">
+    <div className="noScrollbar mt-4  flex gap-2 w-full overflow-x-auto">
         {data.docs.map((cat:Category)=>
             <div key={cat.id}>
                 <CategoryDropDown
