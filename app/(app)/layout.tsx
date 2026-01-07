@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
-import Footer from "@/components/ui/footer";
+import Footer from "@/components/ui/footer/footer";
 const noto = Noto_Sans({
   subsets: ["latin"],
 });

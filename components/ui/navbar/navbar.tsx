@@ -9,7 +9,7 @@ import { AnimatePresence } from 'motion/react'
 export default function Navbar() {
     const [navSidebar, setnavSidebar] = useState(false)
     return (
-        <nav className='h-16 w-full'>
+        <nav className='h-16 w-full bg-background'>
             <div className='relative h-full max-w-360 mx-auto px-4 flex items-center justify-between'>
                 {/* Logo */}
                 <Link href={"/"}>
