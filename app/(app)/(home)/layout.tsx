@@ -6,6 +6,8 @@ import { getPayload } from 'payload'
 import configPromise from "@payload-config"
 import SearchInput from '@/components/ui/search-filters/SearchInput'
 import ContainerWrapper from '@/components/ui/containerWrapper/ContainerWrapper'
+import { Category } from '@/payload-types'
+import { CustomCategory } from '@/components/ui/search-filters/types'
 export default async function layout({ children }: { children: React.ReactNode }) {
   const payload = await getPayload({
     config: configPromise
@@ -20,6 +22,13 @@ export default async function layout({ children }: { children: React.ReactNode }
       }
     }
   })
+  const formattedData:CustomCategory[]=data.docs.map((doc)=>({
+    ...doc,
+    subcategories:(doc.subcategories?.docs ?? []).map((doc)=>({
+      ...(doc as Category),
+      subcategories:undefined
+    }))
+  }))
   return (
     <div>
       <AdBanner />
@@ -30,7 +39,7 @@ export default async function layout({ children }: { children: React.ReactNode }
         </ContainerWrapper>
 
       </div>
-      <SearchFilters data={data} />
+      <SearchFilters data={formattedData} />
       {children}
     </div>
   )

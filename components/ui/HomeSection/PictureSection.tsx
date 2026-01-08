@@ -25,7 +25,7 @@ export default function PictureSection() {
     return () => clearInterval(handler)
   }, [])
   return (
-    <div className="relative  w-full rounded-xl bg-black aspect-[16/9] md:aspect-[22/9]
+    <div className="relative  w-full rounded-xl bg-black aspect-video md:aspect-22/9
 ">
       <Image
         fill

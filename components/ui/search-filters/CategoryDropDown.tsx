@@ -1,8 +1,9 @@
 "use client"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "../button"
+import { CustomCategory } from "./types"
 interface Props {
-    category: any
+    category: CustomCategory
 }
 
 const DROPDOWN_WIDTH = 192
@@ -12,8 +13,6 @@ export default function CategoryDropDown({ category }: Props) {
     const [open, setOpen] = useState(false)
     const [position, setPosition] = useState({ top: 0, left: 0 })
     const triggerRef = useRef<HTMLDivElement>(null)
-
-    const subcategories = category?.subcategories?.docs ?? []
 
     const calculatePosition = () => {
         if (!triggerRef.current) return
@@ -53,7 +52,7 @@ export default function CategoryDropDown({ category }: Props) {
                 {category.name}
             </Button>
 
-            {open && subcategories.length > 0 && (
+            {open && category.subcategories && category.subcategories.length > 0 && (
                 <>
                     <div
                         style={{
@@ -75,7 +74,7 @@ export default function CategoryDropDown({ category }: Props) {
 
                         className="w-48 rounded-md bg-white p-4 border border-black shadow-lg text-black"
                     >
-                        {subcategories.map((sub: any) => (
+                        {category.subcategories.map((sub) => (
                             <div key={sub.id} className="py-1 cursor-pointer">
                                 <ul className="list-disc pl-4">
                                     <li className="text-sm underline underline-offset-2 hover:text-gray-800">
