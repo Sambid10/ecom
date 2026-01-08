@@ -1,34 +1,19 @@
 import AdBanner from '@/components/ui/adBanner'
-import React from 'react'
+import React, { Suspense } from 'react'
 import Navbar from '@/components/ui/navbar/navbar'
+import { ErrorBoundary } from "react-error-boundary";
 import SearchFilters from '@/components/ui/search-filters'
-import { getPayload } from 'payload'
-import configPromise from "@payload-config"
 import SearchInput from '@/components/ui/search-filters/SearchInput'
 import ContainerWrapper from '@/components/ui/containerWrapper/ContainerWrapper'
-import { Category } from '@/payload-types'
-import { CustomCategory } from '@/components/ui/search-filters/types'
+import { getQueryClient, trpc } from '@/trpc/server'
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import Loading from '@/components/ui/Loading/Loading'
 export default async function layout({ children }: { children: React.ReactNode }) {
-  const payload = await getPayload({
-    config: configPromise
-  })
-  const data = await payload.find({
-    collection: "categories",
-    depth: 1,
-    pagination:false,
-    where: {
-      parent: {
-        exists: false
-      }
-    }
-  })
-  const formattedData:CustomCategory[]=data.docs.map((doc)=>({
-    ...doc,
-    subcategories:(doc.subcategories?.docs ?? []).map((doc)=>({
-      ...(doc as Category),
-      subcategories:undefined
-    }))
-  }))
+  const queryClient = getQueryClient()
+  void queryClient.prefetchQuery(
+    trpc.category.getMany.queryOptions()
+  )
+
   return (
     <div>
       <AdBanner />
@@ -37,9 +22,16 @@ export default async function layout({ children }: { children: React.ReactNode }
         <ContainerWrapper>
           <SearchInput />
         </ContainerWrapper>
-
       </div>
-      <SearchFilters data={formattedData} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense
+          fallback={<Loading  divclassName='h-16 flex items-center justify-center'/>}>
+          <ErrorBoundary fallback={<p>Error fetching categories.Please try again.</p>}>
+            <SearchFilters />
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
+
       {children}
     </div>
   )

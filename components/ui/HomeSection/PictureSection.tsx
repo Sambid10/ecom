@@ -3,7 +3,22 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import CustomButton from '../customButton'
 import { ChevronRight } from 'lucide-react'
-const picArray = [{
+const picArray = [
+  {
+  url: "/pictures/sam8.jpg"
+},
+  {
+  url: "/pictures/sam7.jpg"
+},
+   {
+  url: "/pictures/sam6.jpg"
+},
+  {
+  url: "/pictures/sam5.jpg"
+},
+  {
+  url: "/pictures/sam4.jpg"
+},{
   url: "/pictures/sam1.png"
 },
 {
@@ -20,7 +35,13 @@ export default function PictureSection() {
   const [activeId, setActiveId] = useState(0)
   useEffect(() => {
     const handler = setInterval(() => {
-      setActiveId((prev) => (prev + 1) % picArray.length)
+      setActiveId((prev) => {
+        let next= prev;
+        while (next === prev){
+          next=Math.floor(Math.random() * picArray.length)
+        }
+        return next
+      })
     }, 60000)
     return () => clearInterval(handler)
   }, [])

@@ -9,7 +9,7 @@ interface Props{
 export default function Categories({data}:Props) {
     console.log(data,"TESES")
   return (
-    <div className="noScrollbar mt-4 relative  flex gap-2 w-full overflow-x-auto">
+    <div className="noScrollbar  relative  flex gap-2 w-full overflow-x-auto h-16 items-center">
         {data.map((cat)=>
             <div key={cat.id} >
                 <CategoryDropDown
