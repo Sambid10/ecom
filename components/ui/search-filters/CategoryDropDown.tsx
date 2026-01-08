@@ -26,6 +26,7 @@ export default function CategoryDropDown({ category }: Props) {
         if (left + DROPDOWN_WIDTH > window.innerWidth) {
             left = rect.right - DROPDOWN_WIDTH
         }
+        left = Math.max(8, Math.min(left, window.innerWidth - DROPDOWN_WIDTH - 8))
         setPosition({ top, left })
     }
 
@@ -47,9 +48,8 @@ export default function CategoryDropDown({ category }: Props) {
             ref={triggerRef}
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
-            className="relative"
         >
-            <Button className={`${open ? "bg-black text-white" : "bg-white text-black"} h-10 rounded-full border border-black  hover:text-white hover:bg-black`}>
+            <Button className={`${open ? "bg-black text-white" : "bg-white text-black"} h-10 rounded-full border cursor-pointer border-black  hover:text-white hover:bg-black`}>
                 {category.name}
             </Button>
 
@@ -60,16 +60,11 @@ export default function CategoryDropDown({ category }: Props) {
                             position: "fixed",
                             top: position.top - BRIDGE_HEIGHT,
                             left: position.left,
-                            width: DROPDOWN_WIDTH,
-                            height: BRIDGE_HEIGHT,
+                            width: DROPDOWN_WIDTH * 1.5,
+                            height: 24,
                             zIndex: 9999,
-
-
                         }}
-                        onMouseEnter={() => setOpen(true)}
-                        onMouseLeave={() => setOpen(false)}
                     />
-
                     <div
                         style={{
                             position: "fixed",
@@ -77,8 +72,7 @@ export default function CategoryDropDown({ category }: Props) {
                             left: position.left,
                             zIndex: 9999,
                         }}
-                        onMouseEnter={() => setOpen(true)}
-                        onMouseLeave={() => setOpen(false)}
+
                         className="w-48 rounded-md bg-white p-4 border border-black shadow-lg text-black"
                     >
                         {subcategories.map((sub: any) => (

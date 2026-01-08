@@ -1,10 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/themeSwitchButton";
-import Image from "next/image";
-
+import ContainerWrapper from "@/components/ui/containerWrapper/ContainerWrapper";
+import PictureSection from "@/components/ui/HomeSection/PictureSection";
 export default function Home() {
   return (
-   <div className="min-h-screen">
+   <div className="min-h-screen mt-4">
+      <ContainerWrapper>
+        <PictureSection/>
+      </ContainerWrapper>
    </div>
   );
 }

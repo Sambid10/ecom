@@ -23,8 +23,8 @@ export default function Navbar() {
                 </div>
 
                 <div className='hidden lg:flex gap-2'>
-                    <CustomButton text='Login' href='/login' />
-                    <CustomButton text='Start Selling' href='/login' />
+                    <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white' text='Login' href='/login' />
+                    <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white ' text='Start Selling' href='/login' />
                 </div>
                 <div className="block lg:hidden">
                     <button
