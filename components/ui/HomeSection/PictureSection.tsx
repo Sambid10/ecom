@@ -5,10 +5,10 @@ import CustomButton from '../customButton'
 import { ChevronRight } from 'lucide-react'
 const picArray = [
   {
-  url: "/pictures/sam8.jpg"
+  url: "/pictures/sam7.jpg"
 },
   {
-  url: "/pictures/sam7.jpg"
+  url: "/pictures/sam8.jpg"
 },
    {
   url: "/pictures/sam6.jpg"

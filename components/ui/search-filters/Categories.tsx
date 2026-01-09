@@ -1,10 +1,8 @@
 "use client"
-import { Category } from "@/payload-types"
+import { CategoriesGetMany } from "@/modules/procedure/categories/types"
 import CategoryDropDown from "./CategoryDropDown"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { CustomCategory } from "./types"
 interface Props{
-    data:CustomCategory[]
+    data:CategoriesGetMany
 }
 export default function Categories({data}:Props) {
     console.log(data,"TESES")

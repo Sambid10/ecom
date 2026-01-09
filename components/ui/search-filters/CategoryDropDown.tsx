@@ -1,9 +1,9 @@
 "use client"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "../button"
-import { CustomCategory } from "./types"
+import { CategoriesGetManySingle } from "@/modules/procedure/categories/types"
 interface Props {
-    category: CustomCategory
+    category: CategoriesGetManySingle
 }
 
 const DROPDOWN_WIDTH = 192
