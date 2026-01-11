@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import CustomButton from '../customButton'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, ShoppingCart } from 'lucide-react'
 const picArray = [
   {
   url: "/pictures/sam7.jpg"
@@ -65,7 +65,8 @@ export default function PictureSection() {
         <h1 className='font-mono text-xs sm:text-sm md:text-lg mb-2 italic font-medium flex items-center'> <ChevronRight className='md:h-4 md:w-4 h-3 w-3 font-bold' /> Your K-Pop Marketplace</h1>
         <div>
           <CustomButton
-            showIcon={true}
+            iconClassName={"h-4 w-4 md:h-5 md:w-5 mr-2"}
+            icon={ShoppingCart}
             className='md:py-3.5  md:px-12 bg-black text-sm md:font-medium md:text-lg text-white hover:bg-gray-900 '
             href='/'
             text='Shop Now'

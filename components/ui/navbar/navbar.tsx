@@ -2,11 +2,16 @@
 import Link from 'next/link'
 import { NavBarItem } from './navbaritems'
 import CustomButton from '@/components/ui/customButton'
-import { MenuIcon } from 'lucide-react'
+import { LayoutDashboard, MenuIcon } from 'lucide-react'
 import { useState } from 'react'
 import NavbarSidebar from './navbarSidebar'
 import { AnimatePresence } from 'motion/react'
+import { useTRPC } from '@/trpc/client'
+import { useQuery } from '@tanstack/react-query'
+import Loading from '../Loading/Loading'
 export default function Navbar() {
+    const trpc = useTRPC()
+    const { data: session,isLoading } = useQuery(trpc.auth.session.queryOptions())
     const [navSidebar, setnavSidebar] = useState(false)
     return (
         <nav className='h-16 w-full bg-background'>
@@ -21,11 +26,21 @@ export default function Navbar() {
                 <div className='lg:absolute lg:left-1/2 lg:top-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 hidden lg:flex'>
                     <NavBarItem />
                 </div>
+                {isLoading  ? 
+                <Loading divclassName='w-32'/>: 
+                  <div className='hidden lg:flex gap-2'>
+                    {session?.user ? <>
+                        <CustomButton iconClassName={"h-4 w-4 mr-2"} icon={LayoutDashboard} className='bg-linear-to-r from-[#121221] to-stone-700 text-white ' text='Dashboard' href='/admin' />
+                    </> :
+                        <>
+                            <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white' text='Sign-in' href='/sign-in' />
+                            <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white ' text='Start Selling' href='/sign-up' />
+                        </>
+                    }
 
-                <div className='hidden lg:flex gap-2'>
-                    <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white' text='Sign-in' href='/sign-in' />
-                    <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white ' text='Start Selling' href='/sign-up' />
                 </div>
+                }
+              
                 <div className="block lg:hidden">
                     <button
                         onClick={() => setnavSidebar(true)}
