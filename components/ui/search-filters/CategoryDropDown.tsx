@@ -2,14 +2,16 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "../button"
 import { CategoriesGetManySingle } from "@/modules/procedure/categories/types"
+import Link from "next/link"
 interface Props {
-    category: CategoriesGetManySingle
+    category: CategoriesGetManySingle,
+    activeCategory: string
 }
 
 const DROPDOWN_WIDTH = 192
 const BRIDGE_HEIGHT = 8
 
-export default function CategoryDropDown({ category }: Props) {
+export default function CategoryDropDown({ category, activeCategory }: Props) {
     const [open, setOpen] = useState(false)
     const [position, setPosition] = useState({ top: 0, left: 0 })
     const triggerRef = useRef<HTMLDivElement>(null)
@@ -48,9 +50,11 @@ export default function CategoryDropDown({ category }: Props) {
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >
-            <Button className={`${open ? "bg-black text-white" : "bg-white text-black"} h-10 rounded-full border cursor-pointer border-black  hover:text-white hover:bg-black`}>
+            <Link
+                href={`/${category.slug}`}
+                className={`${open || activeCategory === category.slug ? "bg-black text-white" : "bg-white text-black"} h-10 w-fit px-4 rounded-full border cursor-pointer border-black  hover:text-white hover:bg-gray-800 inline-flex items-center justify-center gap-2 whitespace-nowrap  text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive`}>
                 {category.name}
-            </Button>
+            </Link>
 
             {open && category.subcategories && category.subcategories.length > 0 && (
                 <>
@@ -75,14 +79,18 @@ export default function CategoryDropDown({ category }: Props) {
                         className="w-48 rounded-md bg-white p-4 border border-black shadow-lg text-black"
                     >
                         {category.subcategories.map((sub) => (
-                            <div key={sub.id} className="py-1 cursor-pointer">
-                                <ul className="list-disc pl-4">
-                                    <li className="text-sm underline underline-offset-2 hover:text-gray-800">
-                                        {sub.name}
-                                    </li>
-                                </ul>
-                            </div>
+
+                            <Link
+                                key={sub.slug} href={`/${category.slug}/${sub.slug}`}>
+                                <div className="flex items-center mr-1.5">
+                                    <h1 className="mr-1.5">•</h1><h1 className="underline text-sm py-1"> {sub.name}</h1>
+                                </div>
+
+                            </Link>
+
                         ))}
+
+
                     </div>
                 </>
             )}
