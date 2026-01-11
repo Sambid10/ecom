@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Noto_Sans, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
-import Footer from "@/components/ui/footer/footer";
 import { TRPCReactProvider } from "@/trpc/client";
+import { Toaster } from "@/components/ui/sonner";
 const noto = Noto_Sans({
   subsets: ["latin"],
 });
@@ -36,11 +36,11 @@ export default function RootLayout({
         >
           <TRPCReactProvider>
             {children}
+            <Toaster 
+          
+            position="top-center"/>
           </TRPCReactProvider>
-         
-        <Footer />
         </ThemeProvider>
-
       </body>
     </html>
   );

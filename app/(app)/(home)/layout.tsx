@@ -8,6 +8,7 @@ import ContainerWrapper from '@/components/ui/containerWrapper/ContainerWrapper'
 import { getQueryClient, trpc } from '@/trpc/server'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import Loading from '@/components/ui/Loading/Loading'
+import Footer from '@/components/ui/footer/footer';
 export default async function layout({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient()
   void queryClient.prefetchQuery(
@@ -25,7 +26,7 @@ export default async function layout({ children }: { children: React.ReactNode }
       </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense
-          fallback={<Loading  divclassName='h-16 flex items-center justify-center'/>}>
+          fallback={<Loading divclassName='h-16 flex items-center justify-center' />}>
           <ErrorBoundary fallback={<p>Error fetching categories.Please try again.</p>}>
             <SearchFilters />
           </ErrorBoundary>
@@ -33,6 +34,7 @@ export default async function layout({ children }: { children: React.ReactNode }
       </HydrationBoundary>
 
       {children}
+      <Footer />
     </div>
   )
 }
