@@ -6,11 +6,17 @@ import CustomButton from "@/components/ui/customButton"
 import Link from "next/link"
 import { navbarItems } from "./navbaritems"
 import { usePathname } from "next/navigation"
+import { useTRPC } from "@/trpc/client"
+import { useQuery } from "@tanstack/react-query"
+import Loading from "../Loading/Loading"
+import { LayoutDashboard } from "lucide-react"
 import { ChevronRight } from "lucide-react"
 export default function NavbarSidebar({ open, setOpen }: {
     open: boolean,
     setOpen: (open: boolean) => void
 }) {
+    const trpc = useTRPC()
+    const { data: session, isLoading } = useQuery(trpc.auth.session.queryOptions())
     const ref = useRef<HTMLDivElement>(null)
     const pathname = usePathname()
     useOutsideClick({ handler: () => setOpen(false), ref: ref })
@@ -28,16 +34,39 @@ export default function NavbarSidebar({ open, setOpen }: {
                         <h1 className='font-dance text-center font-semibold text-2xl md:text-3xl bg-clip-text text-transparent bg-linear-to-r from-[#000000] to-gray-800'>
                             K-Albumia
                         </h1>
-                        <div className="flex flex-col gap-2 sm:max-w-[300px] sm:mx-auto w-full">
-                            <CustomButton text='Login' href='/login' />
-                            <CustomButton text='Start Selling' href='/login' />
-                        </div>
+                        {isLoading ? (
+                            <Loading />
+                        ) : session?.user ? (
+                            <>
+                                <CustomButton
+                                    iconClassName="h-4 w-4 mr-2"
+                                    icon={LayoutDashboard}
+                                    className="bg-linear-to-r from-[#121221] to-stone-700 text-white"
+                                    text="Dashboard"
+                                    href="/admin"
+                                />
+                            </>
+                        ) : (
+                            <div className="flex flex-col gap-2 sm:max-w-75 sm:mx-auto w-full">
+                                <CustomButton
+                                    className="bg-linear-to-r from-[#121221] to-stone-700 text-white"
+                                    text="Sign-in"
+                                    href="/sign-in"
+                                />
+                                <CustomButton
+                                    className="bg-linear-to-r from-[#121221] to-stone-700 text-white"
+                                    text="Start Selling"
+                                    href="/sign-up"
+                                />
+                            </div>
+                        )}
+
                     </div>
                     <div className="h-8" />
                     <div className="flex flex-col gap-4 items-center">
                         {navbarItems.map((nav, _) =>
                             <Link
-                                onClick={()=>setOpen(false)}
+                                onClick={() => setOpen(false)}
                                 key={nav.id}
                                 href={nav.href}
                                 className="flex group items-center gap-2 w-full  justify-center"
@@ -52,7 +81,7 @@ export default function NavbarSidebar({ open, setOpen }: {
                                 <h1
                                     className={`relative text-2xl
                                     after:absolute after:left-0 after:-bottom-1
-                                    after:h-[2px] after:w-full
+                                    after:h-0.5 after:w-full
                                     after:origin-left after:scale-x-0
                                     after:bg-black after:transition-transform after:duration-300
                                       group-hover:after:scale-x-100
