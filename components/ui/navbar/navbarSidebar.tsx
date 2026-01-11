@@ -37,7 +37,7 @@ export default function NavbarSidebar({ open, setOpen }: {
                         {isLoading ? (
                             <Loading />
                         ) : session?.user ? (
-                            <>
+                            <div className="flex flex-col gap-2 sm:max-w-75 sm:mx-auto w-full mt-2">
                                 <CustomButton
                                     iconClassName="h-4 w-4 mr-2"
                                     icon={LayoutDashboard}
@@ -45,7 +45,7 @@ export default function NavbarSidebar({ open, setOpen }: {
                                     text="Dashboard"
                                     href="/admin"
                                 />
-                            </>
+                            </div>
                         ) : (
                             <div className="flex flex-col gap-2 sm:max-w-75 sm:mx-auto w-full">
                                 <CustomButton
