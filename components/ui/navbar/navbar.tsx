@@ -27,7 +27,7 @@ export default function Navbar() {
                     <NavBarItem />
                 </div>
                 {isLoading  ? 
-                <Loading divclassName='w-32'/>: 
+                <Loading divclassName='w-32 hidden lg:block'/>: 
                   <div className='hidden lg:flex gap-2'>
                     {session?.user ? <>
                         <CustomButton iconClassName={"h-4 w-4 mr-2"} icon={LayoutDashboard} className='bg-linear-to-r from-[#121221] to-stone-700 text-white ' text='Dashboard' href='/admin' />

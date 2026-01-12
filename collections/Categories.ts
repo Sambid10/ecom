@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 export const Categories:CollectionConfig ={
+    admin:{
+        useAsTitle:"name"
+    },
     slug:"categories",
     fields:[
         {
