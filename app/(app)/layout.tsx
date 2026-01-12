@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "@/components/ui/sonner";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 const noto = Noto_Sans({
   subsets: ["latin"],
 });
@@ -35,10 +36,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TRPCReactProvider>
-            {children}
-            <Toaster 
-          
-            position="top-center"/>
+            <NuqsAdapter>
+              {children}
+            </NuqsAdapter>
+
+            <Toaster
+              position="top-center" />
           </TRPCReactProvider>
         </ThemeProvider>
       </body>

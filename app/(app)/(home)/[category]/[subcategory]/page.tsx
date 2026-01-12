@@ -1,5 +1,4 @@
 import ContainerWrapper from '@/components/ui/containerWrapper/ContainerWrapper'
-import { caller } from "@/trpc/server"
 interface Props {
     params: Promise<{
         category: string;

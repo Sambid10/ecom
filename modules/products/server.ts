@@ -5,11 +5,22 @@ import { Category } from "@/payload-types";
 export const productRouter = createTRPCRouter({
     getMany: baseProcedure.input(
         z.object({
-            categorySlug: z.string().nullable().optional()
+            categorySlug: z.string().nullable().optional(),
+            minPrice:z.string().nullable().optional(),
+            maxPrice:z.string().nullable().optional(),
         })
     ).query(async ({ ctx, input }) => {
         const where: Where = {}
-        console.log(input.categorySlug)
+        if(input.minPrice){
+            where.price={
+                greater_than_equal:input.minPrice
+            }
+        }
+        if(input.maxPrice){
+            where.price={
+                less_than_equal:input.maxPrice
+            }
+        }
         if (input.categorySlug) {
             const categorydata = await ctx.payload.find({
                 collection: "categories",
