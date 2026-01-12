@@ -6,19 +6,24 @@ export const productRouter = createTRPCRouter({
     getMany: baseProcedure.input(
         z.object({
             categorySlug: z.string().nullable().optional(),
-            minPrice:z.string().nullable().optional(),
-            maxPrice:z.string().nullable().optional(),
+            minPrice: z.string().nullable().optional(),
+            maxPrice: z.string().nullable().optional(),
         })
     ).query(async ({ ctx, input }) => {
-        const where: Where = {}
-        if(input.minPrice){
-            where.price={
-                greater_than_equal:input.minPrice
-            }
+        const where: Where = {
         }
-        if(input.maxPrice){
-            where.price={
-                less_than_equal:input.maxPrice
+        if (input.minPrice && input.maxPrice) {
+            where.price = {
+                less_than_equal: input.maxPrice,
+                greater_than_equal: input.minPrice
+            }
+        } else if (input.minPrice) {
+            where.price = {
+                greater_than_equal: input.minPrice
+            }
+        } else {
+            where.price = {
+                less_than_equal: input.maxPrice,
             }
         }
         if (input.categorySlug) {
@@ -50,14 +55,14 @@ export const productRouter = createTRPCRouter({
                 )
             }
             where["category.slug"] = {
-                in: [Parentcategory.slug,...subcategoriesSlugs]
+                in: [Parentcategory.slug, ...subcategoriesSlugs]
             }
         }
         const { payload } = ctx
         const data = await payload.find({
             collection: "products",
             depth: 1,
-            where:where
+            where: where
         })
         return data
     })
