@@ -40,7 +40,7 @@ export default function PriceFilter({ onMaxPriceChange, onMinPriceChange, maxPri
     return (
         <div className="flex flex-col gap-2 mt-2">
             <div className="flex flex-col gap-2">
-                <Label className="font-medium text-base  text-gray-800">
+                <Label className="font-medium text-[14px]  text-gray-800">
                     Minimum Price:
                 </Label>
                 <Input
@@ -51,7 +51,7 @@ export default function PriceFilter({ onMaxPriceChange, onMinPriceChange, maxPri
                 />
             </div>
             <div className="flex flex-col gap-2">
-                <Label className="font-medium text-base text-gray-800">
+                <Label className="font-medium text-[14px] text-gray-800">
                     Maximum Price:
                 </Label>
                 <Input
