@@ -1,7 +1,7 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
 import * as z from "zod";
-import { Category } from "@/payload-types";
+import { Category, Media } from "@/payload-types";
 import { sortValues } from "@/hooks/searchParams";
 
 export const productRouter = createTRPCRouter({
@@ -11,7 +11,7 @@ export const productRouter = createTRPCRouter({
       minPrice: z.string().nullable().optional(),
       maxPrice: z.string().nullable().optional(),
       tags: z.array(z.string()).nullable().optional(),
-      sort: z.enum(sortValues).nullable().optional().catch(undefined)
+      sort: z.enum(sortValues).nullable().optional()
     })
   ).query(async ({ ctx, input }) => {
 
@@ -90,6 +90,12 @@ export const productRouter = createTRPCRouter({
       sort
     });
 
-    return data;
+    return {
+      ...data,
+      docs: data.docs.map((doc) => ({
+        ...doc,
+        image: doc.image as Media 
+      }))
+    };
   })
 });

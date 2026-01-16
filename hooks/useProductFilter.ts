@@ -1,6 +1,6 @@
 import { parseAsStringLiteral, useQueryStates } from "nuqs"
 import {parseAsArrayOf, parseAsString } from "nuqs"
-const sort= ["Newest" , "Oldest" , "Trending"]
+export const sortValues= ["newest" , "oldest" , "trending"] as const
 export const params = {
     minPrice: parseAsString.withOptions({
         clearOnDefault: true
@@ -11,9 +11,9 @@ export const params = {
     tags:parseAsArrayOf(parseAsString).withOptions({
         clearOnDefault:true
     }).withDefault([]),
-    sort:parseAsStringLiteral(sort).withOptions({
+    sort:parseAsStringLiteral(sortValues).withOptions({
         clearOnDefault:true,
-    }).withDefault("")
+    }).withDefault("newest")
 }
 export const useProductFilter = () => {
     return useQueryStates(params)

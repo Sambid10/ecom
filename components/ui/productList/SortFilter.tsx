@@ -3,20 +3,20 @@ import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useProductFilter } from '@/hooks/useProductFilter'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { keyof } from 'zod'
 
 export default function SortFilter() {
     const ref = useRef<HTMLDivElement>(null)
     const [filter,setFilter]=useProductFilter()
+
+    const [openSortfilter, setOpenSortfilter] = useState(false)
     const onClick=(key:keyof typeof filter,value:unknown)=>{
         setFilter({...filter,[key]:value})
+        setOpenSortfilter(false)   
     }
-    const [openSortfilter, setOpenSortfilter] = useState(false)
-
     useOutsideClick({ handler: () => setOpenSortfilter(false), ref })
 
     return (
-        <div ref={ref} className='relative'>
+        <div ref={ref} className='re'>
             <button
                 onClick={() => setOpenSortfilter(prev => !prev)}
                 className='bg-black rounded-full border border-black h-8 w-24 text-white flex items-center gap-1 justify-center cursor-pointer'
@@ -26,7 +26,7 @@ export default function SortFilter() {
             </button>
 
             {openSortfilter && (
-                <div className='border  border-black bg-white absolute top-[110%] rounded-md shadow-md h-fit w-30 right-0 z-40'>
+                <div className='border  border-black bg-white absolute top-[110%] rounded-md shadow-md h-fit w-32 right-0 z-40'>
                     <button 
                     onClick={()=>onClick("sort","trending")}
                     className='cursor-pointer w-full text-left '>

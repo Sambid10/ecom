@@ -32,11 +32,11 @@ export default function ProductFilters() {
         setFilters({ ...filters, [key]: value })
     }
     return (
-        <div className="border rounded-md bg-white shadow-md">
+        <div className="border rounded-md bg-white shadow-md mt-10">
             <div className="p-3 border-b flex items-center justify-between">
                 <p className="font-medium">Filters</p>
                 <button
-                    onClick={() => setFilters({ minPrice: "", maxPrice: "", tags: [] ,sort:""})}
+                    onClick={() => setFilters({ minPrice: "", maxPrice: "", tags: [] ,sort:"newest"})}
                     className="border-b border-gray-400 cursor-pointer flex items-center gap-2 ">
                     <h1>Clear</h1> <h1 className="text-red-500 ">X</h1>
                 </button>
