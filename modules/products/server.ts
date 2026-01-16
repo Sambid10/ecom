@@ -7,6 +7,8 @@ import { sortValues } from "@/hooks/searchParams";
 export const productRouter = createTRPCRouter({
   getMany: baseProcedure.input(
     z.object({
+      page:z.number().default(1),
+      limit:z.number().default(2),
       categorySlug: z.string().nullable().optional(),
       minPrice: z.string().nullable().optional(),
       maxPrice: z.string().nullable().optional(),
@@ -87,7 +89,9 @@ export const productRouter = createTRPCRouter({
       collection: "products",
       depth: 1,
       where,
-      sort
+      sort,
+      page:input.page,
+      limit:input.limit,
     });
 
     return {

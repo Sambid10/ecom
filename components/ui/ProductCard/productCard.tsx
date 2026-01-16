@@ -51,7 +51,7 @@ export default function ProductCard({
                             src={pic || "/pictures/place.png"}
                         />
                     </div>
-                    <div className="p-4 border-y flex flex-col gap-2 flex-1">
+                    <div className="p-4 border-y flex flex-col gap-2 h-[140px]">
                         <h1 
                         style={{
                             lineHeight:"120%"
