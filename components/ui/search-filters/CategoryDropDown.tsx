@@ -5,7 +5,7 @@ import { CategoriesGetManySingle } from "@/modules/procedure/categories/types"
 import Link from "next/link"
 interface Props {
     category: CategoriesGetManySingle,
-    activeCategory: string
+    activeCategory: string | undefined
 }
 
 const DROPDOWN_WIDTH = 192

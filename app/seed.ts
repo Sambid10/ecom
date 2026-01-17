@@ -184,7 +184,15 @@ const categories = [
 
 const seed = async () => {
   const payload = await getPayload({ config })
-
+    // await payload.create({
+    //     collection:"users",
+    //     data:{
+    //         email:"superadmin@gmail.com",
+    //         password:"superadmin",
+    //         roles:["super-admin"],
+    //         username:"superadmin"
+    //     }
+    // })
 for (const category of categories) {
   const parentCategory = await payload.create({
     collection: "categories",
