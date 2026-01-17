@@ -5,15 +5,18 @@ import CustomButton from '../customButton'
 import { ChevronRight, ShoppingCart } from 'lucide-react'
 
 const picArray = [
-  { url: "/pictures/sam4.jpg" },
-  { url: "/pictures/sam8.jpg" },
-  { url: "/pictures/sam6.jpg" },
-  { url: "/pictures/sam5.jpg" },
-  { url: "/pictures/sam3.jpg" },
-  { url: "/pictures/sam1.png" },
-  { url: "/pictures/sam7.jpg" },
-  { url: "/pictures/sam.png" },
-  { url: "/pictures/pics.jpg" },
+  { url: "/pictures/karina.jpg" },
+  { url: "/pictures/giselle.jpg" },
+  { url: "/pictures/yuna1.jpg" },
+  { url: "/pictures/yeji.png" },
+  { url: "/pictures/miyeon.png" },
+  { url: "/pictures/kar.jpg" },
+  { url: "/pictures/gis.jpg" },
+  { url: "/pictures/win.jpg" },
+  { url: "/pictures/dani.jpg" },
+  { url: "/pictures/ire.jpg" },
+  { url: "/pictures/wen.jpg" },
+  { url: "/pictures/hanni.jpg" },
 ]
 
 export default function PictureSection() {
@@ -37,16 +40,15 @@ export default function PictureSection() {
   }, [])
 
   return (
-    <div className="relative w-full rounded-md  aspect-video md:aspect-22/8 border border-gray-200">
+    <div className="relative w-full rounded-md  aspect-16/13 sm:aspect-16/10  md:aspect-22/8 border border-gray-400">
 
       {activeId === null ? (
         // placeholder until first random picks
-        <div className="w-full h-full rounded-xl bg-background" />
+        <div className="w-full h-full rounded-xl bg-background aspect-16/13 sm:aspect-16/10  md:aspect-22/8 " />
       ) : (
-        <Image
-          fill
+        <img
           alt="pic"
-          className="object-cover opacity-100 brightness-90 border-gray-900 rounded-md shadow-md"
+          className="object-cover opacity-100 brightness-90 border-gray-900 rounded-md shadow-md aspect-16/13 sm:aspect-16/10  md:aspect-22/8"
           src={picArray[activeId].url}
         />
       )}
@@ -54,7 +56,7 @@ export default function PictureSection() {
       <div className="absolute top-[45%] left-4 md:left-12 -translate-y-1/2 flex flex-col gap-1">
         <h1
           style={{ lineHeight: "105%" }}
-          className="font-dance font-bold text-[2rem] sm:text-[3.85rem] md:text-[4.5rem] lg:text-[6rem]"
+          className="font-dance font-bold text-[2.4rem] sm:text-[3.8rem] md:text-[4.5rem] lg:text-[5.8rem]"
         >
           K-Shopify.
         </h1>

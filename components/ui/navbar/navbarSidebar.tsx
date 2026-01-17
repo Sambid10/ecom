@@ -10,6 +10,8 @@ import { useTRPC } from "@/trpc/client"
 import { useQuery } from "@tanstack/react-query"
 import Loading from "../Loading/Loading"
 import { LayoutDashboard } from "lucide-react"
+import SocialButton from "../footer/SocialButton"
+import { FaFacebook, FaGithub, FaInstagram } from "react-icons/fa";
 import { ChevronRight } from "lucide-react"
 export default function NavbarSidebar({ open, setOpen }: {
     open: boolean,
@@ -28,7 +30,7 @@ export default function NavbarSidebar({ open, setOpen }: {
                 animate={{ x: "0%" }}
                 exit={{ x: "100%" }}
                 transition={{ duration: 0.3, ease: "easeIn" }}
-                className='fixed top-0 z-100 border-r-black border right-0 w-[60%] bg-background min-h-screen p-4 overflow-y-auto'>
+                className='fixed top-0 z-100 border-r-black border right-0 w-[70%] bg-background min-h-screen p-4 overflow-y-auto'>
                 <div>
                     <div className="flex flex-col gap-2">
                         <h1 className='font-dance text-center font-semibold text-2xl md:text-3xl bg-clip-text text-transparent bg-linear-to-r from-[#000000] to-gray-800'>
@@ -98,6 +100,26 @@ export default function NavbarSidebar({ open, setOpen }: {
 
                         )}
                     </div>
+                                    <div className="flex flex-row gap-4 absolute bottom-8 left-1/2 -translate-x-1/2">
+                                        <SocialButton
+                                            className="fill-blue-600"
+                                            href="https://www.facebook.com/sambid.shakya"
+                                            Icon={FaFacebook}
+                                        />
+                    
+                                        <SocialButton
+                                            className="fill-gray-900"
+                                            href="https://github.com/Sambid10"
+                                            Icon={FaGithub}
+                                        />
+                    
+                                        <SocialButton
+                                            className="fill-pink-600"
+                                            href="https://www.instagram.com/sambidshakya/"
+                                            Icon={FaInstagram}
+                                        />
+                    
+                                    </div>
 
                 </div>
             </motion.div>
