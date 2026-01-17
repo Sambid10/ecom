@@ -65,12 +65,15 @@ export default function Footer() {
                 <div className="h-[0.5px] w-full  bg-black" />
                 <div className="flex gap-2 items-center">
                     <h1 className="text-sm text-gray-800">Powered By:</h1>
-                    <Image
-                        height={120}
-                        width={120}
+                    <div className="relative h-6.5 w-25 md:h-7 md:w-30">
+                          <Image
+                            fill
                         alt="payload"
+                        className="object-contain"
                         src={"/pictures/payload.svg"}
                     />
+                    </div>
+                  
                 </div>
 
 
