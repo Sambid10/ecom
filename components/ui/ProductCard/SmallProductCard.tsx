@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
+import { useState } from "react"
 interface Props {
     id: string,
     name: string,
@@ -16,7 +17,7 @@ interface Props {
 import { AnimatePresence, motion } from "motion/react"
 import { StarIcon } from "lucide-react"
 
-export default function ProductCard({
+export default function SmallProductCard({
     id,
     authorImageUrl,
     authorUsername,
@@ -31,17 +32,18 @@ export default function ProductCard({
 }: Props) {
 
     const isHovered = hoveredId === id
+
     return (
         <div
             onMouseEnter={() => setHoveredId(id)}
             onMouseLeave={() => setHoveredId(null)}
-            className="relative">
+            className="relative bg-white">
             <Link
                 href="/"
 
             >
-                <div className="border border-gray-600 rounded-md bg-background overflow-hidden h-full flex flex-col shadow-xs">
-                    <div className="relative aspect-square">
+                <div className="border col-span-1 border-gray-600 rounded-md  overflow-hidden h-full flex flex-col shadow-xs">
+                    <div className="relative aspect-video">
                         <Image
                             alt={name}
                             fill

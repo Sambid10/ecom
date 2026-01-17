@@ -44,6 +44,7 @@ export default function ProductList({ category }: Props) {
     return <NoProduct />
   }
   const totalPages = Math.ceil(data.totalDocs / Number(totalLimit))
+  console.log(data.docs.map((doc)=>doc.image),"ASS")
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-4">

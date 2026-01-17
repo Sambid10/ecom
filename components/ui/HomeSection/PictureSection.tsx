@@ -37,16 +37,16 @@ export default function PictureSection() {
   }, [])
 
   return (
-    <div className="relative w-full rounded-xl bg-black aspect-video md:aspect-22/9">
+    <div className="relative w-full rounded-xl  aspect-video md:aspect-22/8 border border-gray-200">
 
       {activeId === null ? (
         // placeholder until first random picks
-        <div className="w-full h-full rounded-xl bg-background animate-pulse" />
+        <div className="w-full h-full rounded-xl bg-background" />
       ) : (
         <Image
           fill
           alt="pic"
-          className="object-cover opacity-80 border-gray-900 rounded-xl"
+          className="object-cover opacity-100 brightness-90 border-gray-900 rounded-xl"
           src={picArray[activeId].url}
         />
       )}
