@@ -92,7 +92,7 @@ export default function SignUpView() {
         >
           <path
             d="M0 0 C90 200 -20 500 0 800 L100 800 L100 0 Z"
-            fill="#F5F2F2"
+            fill="#FCF8F8"
           />
 
 

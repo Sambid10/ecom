@@ -5,23 +5,24 @@ import { useEffect, useState } from "react"
 const divs = [
     {
         id: 1,
-        text: "Free shipping on all orders $50+",
-        bgColor: "bg-teal-400",
-        textColor: "text-gray-800",
+        text: "Free shipping on all orders $50+.",
+
+        bgColor: "bg-purple-600",
+        textColor: "text-white",
     },
     {
         id: 2,
         text: "New Deals. 50% OFF.Get it before they're gone!",
         linktext: "Shop Now",
         link: "/",
-        bgColor: "bg-purple-600",
+        bgColor: "bg-rose-500",
         textColor: "text-white",
     },
     {
         id: 3,
         text: "New Arrivals: Explore the Latest K-Pop Albums and Merch!",
-        bgColor: "bg-blue-400",
-        textColor: "text-gray-800",
+        bgColor: "bg-indigo-600",
+        textColor: "text-white",
     },
 ]
 export default function AdBanner() {
@@ -44,12 +45,12 @@ export default function AdBanner() {
                     className={`${divs[activeDiv].bgColor} ${divs[activeDiv].textColor} absolute h-full w-full z-50 flex items-center justify-center  `}
                 >
                     <div className="">
-                        <h1 className="text-[13px]">{divs[activeDiv].text}</h1>
+                        <h1 className="text-[13px] tracking-wide font-medium">{divs[activeDiv].text}</h1>
                         {divs[activeDiv].link &&
                             <Link
                                 href={divs[activeDiv].link}
                             >
-                                <h1 className="text-[13px] underline font-semibold text-center">{divs[activeDiv].linktext}</h1>
+                                <h1 className="text-[13px] tracking-wide underline font-semibold text-center">{divs[activeDiv].linktext}</h1>
                             </Link>
                         }
                     </div>

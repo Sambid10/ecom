@@ -16,7 +16,7 @@ export default function SortFilter() {
     useOutsideClick({ handler: () => setOpenSortfilter(false), ref })
 
     return (
-        <div ref={ref} className='re'>
+        <div ref={ref} className=''>
             <button
                 onClick={() => setOpenSortfilter(prev => !prev)}
                 className='bg-black rounded-full border border-black h-8 w-24 text-white flex items-center gap-1 justify-center cursor-pointer'

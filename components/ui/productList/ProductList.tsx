@@ -26,6 +26,7 @@ export default function ProductList({ category }: Props) {
   const [filters] = useProductFilter()
   const search = useSearchParams()
   const pathname = usePathname()
+  console.log(pathname)
   const page = search.get("page") ?? DEFAULT_PAGE
   const totalLimit = search.get("totalLimit") ?? DEFAULT_TOTAL_ITEMS
   const trpc = useTRPC()
@@ -68,7 +69,7 @@ export default function ProductList({ category }: Props) {
           <PaginationContent>
             {Number(page) > 1 &&
               <PaginationItem>
-                <PaginationPrevious href={`/albums?page=${Number(page) - 1}&totalLimit=${totalLimit}`} />
+                <PaginationPrevious href={`${pathname}?page=${Number(page) - 1}&totalLimit=${totalLimit}`} />
               </PaginationItem>
             }
 
@@ -77,12 +78,12 @@ export default function ProductList({ category }: Props) {
                 <PaginationLink
                 
                   className={`${Number(page) === index  + 1? "bg-black text-white" : "bg-white text-black"} hover:bg-gray-200 border-gray-400 border`}
-                  href={`/albums?page=${index + 1}&totalLimit=${totalLimit}`}>{index + 1}</PaginationLink>
+                  href={`${pathname}?page=${index + 1}&totalLimit=${totalLimit}`}>{index + 1}</PaginationLink>
               </PaginationItem>
             )}
             {totalPages !== Number(page) &&
               <PaginationItem>
-                <PaginationNext href={`/albums?page=${Number(page) + 1}&totalLimit=${totalLimit}`} />
+                <PaginationNext href={`${pathname}?page=${Number(page) + 1}&totalLimit=${totalLimit}`} />
               </PaginationItem>
             }
 

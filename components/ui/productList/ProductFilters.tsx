@@ -1,5 +1,5 @@
 "use client"
-import { ChevronDown, ChevronRight, LucideIcon } from "lucide-react"
+import { ChevronDown, ChevronRight, LucideIcon, Trash, Trash2Icon } from "lucide-react"
 import React, { useState } from "react"
 import { cn } from "@/lib/utils"
 import PriceFilter from "./PriceFilter"
@@ -12,7 +12,7 @@ interface ProductFilterProps {
 }
 
 const ProductFilter = ({ children, title, className }: ProductFilterProps) => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
     const Icon = isOpen ? ChevronDown : ChevronRight
     return (
         <div className={cn("p-3 border-b flex-col gap-2", className)}>
@@ -37,8 +37,8 @@ export default function ProductFilters() {
                 <p className="font-medium">Filters</p>
                 <button
                     onClick={() => setFilters({ minPrice: "", maxPrice: "", tags: [] ,sort:"newest"})}
-                    className="border-b border-gray-400 cursor-pointer flex items-center gap-2 ">
-                    <h1>Clear</h1> <h1 className="text-red-500 ">X</h1>
+                    className="border-b border-gray-400 cursor-pointer flex items-center gap-1 ">
+                    <h1 className="text-[15px]">Clear</h1> <h1 className="text-red-500 "><Trash2Icon className="h-3.5 w-3.5"/></h1>
                 </button>
 
             </div>

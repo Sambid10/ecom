@@ -48,10 +48,10 @@ export default function ProductCard({
                             alt={name}
                             fill
                             className="object-cover"
-                            src={pic || "/pictures/place.png"}
+                            src={pic || "/pictures/place.jpg"}
                         />
                     </div>
-                    <div className="p-4 border-y flex flex-col gap-2 h-[140px]">
+                    <div className="p-4 border-y flex flex-col gap-2 h-35">
                         <h1 
                         style={{
                             lineHeight:"120%"
@@ -64,7 +64,7 @@ export default function ProductCard({
                                 width={16}
                                 height={16}
                                 src={authorImageUrl ? authorImageUrl : "/pictures/avatar.png" }
-                                className="rounded-full border shrink-0 size-[30px] border border-gray-400"
+                                className="rounded-full shrink-0 size-7.5 border border-gray-400"
                                 />
                             
                             <p className="text-sm underline font-medium underline-offset-2">{authorUsername}</p>

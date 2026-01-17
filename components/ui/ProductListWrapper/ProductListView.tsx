@@ -11,7 +11,7 @@ interface Props {
 }
 export default function ProductListView({ category, subcategory }: Props) {
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-6 xl:grid-cols-10 space-x-6 pb-20  relative'>
+    <div className='grid grid-cols-1 lg:grid-cols-6 xl:grid-cols-10 pb-20  relative '>
       <div className="lg:col-span-2 flex flex-col gap-2 w-full pb-4 relative">
         
         <div className='absolute top-0 w-[50vw] flex items-center gap-2 h-8'>
@@ -37,7 +37,7 @@ export default function ProductListView({ category, subcategory }: Props) {
         </div>
         <ProductFilters />
       </div>
-      <div className='lg:absolute lg:right-2 lg:-mt-0.5  mt-4 ml-auto'>
+      <div className='lg:absolute lg:right-0 lg:-mt-0.5  mt-4 ml-auto '>
         <SortFilter />
       </div>
       <div className='lg:col-span-4 xl:col-span-8 overflow-y-auto min-h-dvh gap-y-6 pt-4 lg:pt-10 lg:ml-4'>
