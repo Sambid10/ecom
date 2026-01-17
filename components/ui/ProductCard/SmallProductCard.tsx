@@ -52,11 +52,14 @@ export default function SmallProductCard({
                         />
                     </div>
                     <div className="p-4 border-y flex flex-col gap-2 h-35">
-                        <h1 
+                        <span className="h-20">
+ <h1 
                         style={{
                             lineHeight:"120%"
                         }}
                         className="line-clamp-2 text-base font-medium">{name}</h1>
+                        </span>
+                       
                         <div className="flex items-center gap-2">
                         
                                 <Image

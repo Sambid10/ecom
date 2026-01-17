@@ -28,7 +28,7 @@ export default function NewProductSection() {
                         <h1 className='text-center'>SHOP ALL PRODUCTS</h1>
                     </Link>
                 </div>
-                <div className='grid gap-4 md:gap-4 px-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+                <div className='grid gap-4 md:gap-4 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                     <Suspense fallback={<Loading/>}>
                         <ErrorBoundary fallback={<p>Something bad happended.</p>}>
                             {data?.docs.map((product) =>

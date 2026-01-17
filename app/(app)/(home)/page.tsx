@@ -9,7 +9,7 @@ export default async function Home() {
     limit:5
   }))
   return (
-    <div className="min-h-screen mt-4 mb-4">
+    <div className="min-h-screen mt-4 mb-12">
       <ContainerWrapper>
         <PictureSection />
         <HydrationBoundary state={dehydrate(queryClient)}>
