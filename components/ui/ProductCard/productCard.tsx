@@ -60,15 +60,13 @@ export default function ProductCard({
 
                         <div className="flex items-center gap-2">
                         
-                                <Image
+                                <img
                                 alt="auth"
-                                width={16}
-                                height={16}
                                 src={authorImageUrl ? authorImageUrl : "/pictures/avatar.png" }
-                                className="rounded-full shrink-0 size-7.5 border border-gray-400"
+                                className="rounded-full h-9 w-9 object-cover shrink-0  border border-gray-400"
                                 />
                             
-                            <p className="text-sm underline font-medium underline-offset-2">{authorUsername}</p>
+                            <p className="text-sm underline font-medium underline-offset-2 capitalize">{authorUsername}</p>
                         </div>
                         {reviewCount > 0 && 
                             <div className="flex items-center gap-1">

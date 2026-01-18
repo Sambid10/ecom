@@ -38,8 +38,8 @@ export default function NewProductSection() {
                                     description={product.description!}
                                     name={product.name}
                                     pic={product.image?.url}
-                                    authorUsername="Sam"
-                                    authorImageUrl={undefined}
+                                    authorUsername={product.tenant.name}
+                                    authorImageUrl={product.tenant.image?.url}
                                     reviewRating={3}
                                     reviewCount={5}
                                     price={product.price}

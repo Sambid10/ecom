@@ -47,6 +47,8 @@ export default function PictureSection() {
         <div className="w-full h-full rounded-xl bg-background aspect-16/13 sm:aspect-16/10  md:aspect-22/8 " />
       ) : (
         <img
+        loading='lazy'
+        fetchPriority='high' 
           alt="pic"
           className="object-cover opacity-100 brightness-90 border-gray-900 rounded-md shadow-md aspect-16/13 sm:aspect-16/10  md:aspect-22/8"
           src={picArray[activeId].url}

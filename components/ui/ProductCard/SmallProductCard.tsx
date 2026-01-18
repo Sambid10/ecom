@@ -53,38 +53,36 @@ export default function SmallProductCard({
                     </div>
                     <div className="p-4 border-y flex flex-col gap-2 h-35">
                         <span className="h-20">
- <h1 
-                        style={{
-                            lineHeight:"120%"
-                        }}
-                        className="line-clamp-2 text-base font-medium">{name}</h1>
+                            <h1
+                                style={{
+                                    lineHeight: "120%"
+                                }}
+                                className="line-clamp-2 text-base font-medium">{name}</h1>
                         </span>
-                       
+
                         <div className="flex items-center gap-2">
-                        
-                                <Image
+
+                            <img
                                 alt="auth"
-                                width={16}
-                                height={16}
-                                src={authorImageUrl ? authorImageUrl : "/pictures/avatar.png" }
-                                className="rounded-full shrink-0 size-7.5 border border-gray-400"
-                                />
-                            
-                            <p className="text-sm underline font-medium underline-offset-2">{authorUsername}</p>
+                                src={authorImageUrl ? authorImageUrl : "/pictures/avatar.png"}
+                                className="rounded-full h-7 w-7 object-cover shrink-0  border border-gray-400"
+                            />
+
+                            <p className="text-sm underline font-medium underline-offset-2 capitalize">{authorUsername}</p>
                         </div>
-                        {reviewCount > 0 && 
+                        {reviewCount > 0 &&
                             <div className="flex items-center gap-1">
-                                <StarIcon className="size-4 fill-yellow-500"/>
+                                <StarIcon className="size-4 fill-yellow-500" />
                                 <p className="text-sm">{reviewRating} ({reviewCount})</p>
                             </div>
                         }
                     </div>
-                     <div className="p-4 border-y border-gray-400 flex flex-col gap-2 flex-1">
-                        <h1 className="text-base font-medium">Price: {new Intl.NumberFormat("en-US",{
-                            style:"currency",
-                            currency:"USD"
+                    <div className="p-4 border-y border-gray-400 flex flex-col gap-2 flex-1">
+                        <h1 className="text-base font-medium">Price: {new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD"
                         }).format(Number(price))}</h1>
-                     </div>
+                    </div>
                 </div>
             </Link>
             <AnimatePresence>
@@ -94,7 +92,7 @@ export default function SmallProductCard({
                         initial={{ opacity: 0, scale: 0.7 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.7 }}
-                        transition={{ duration: 0.2,ease:"easeIn" }}
+                        transition={{ duration: 0.2, ease: "easeIn" }}
                         className="absolute inset-0 bg-black/10 rounded-md pointer-events-none"
                     />
                 )}

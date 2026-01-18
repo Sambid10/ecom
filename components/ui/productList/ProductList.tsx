@@ -47,7 +47,7 @@ export default function ProductList({ category }: Props) {
   console.log(data.docs.map((doc)=>doc.image),"ASS")
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-5">
         {data.docs.map((product) => (
           <ProductCard
             key={product.id}
@@ -55,8 +55,8 @@ export default function ProductList({ category }: Props) {
             description={product.description!}
             name={product.name}
             pic={product.image?.url}
-            authorUsername="Sam"
-            authorImageUrl={undefined}
+            authorUsername={product.tenant.name}
+            authorImageUrl={product.tenant.image?.url}
             reviewRating={3}
             reviewCount={5}
             price={product.price}
@@ -65,7 +65,8 @@ export default function ProductList({ category }: Props) {
           />
         ))}
       </div>
-      <div className="absolute right-0 bottom-4">
+       {Number(totalPages) > 1 && 
+         <div className="absolute right-0 bottom-4">
         <Pagination>
           <PaginationContent>
             {Number(page) > 1 &&
@@ -91,6 +92,8 @@ export default function ProductList({ category }: Props) {
           </PaginationContent>
         </Pagination>
       </div>
+       }
+    
 
     </div>
 
