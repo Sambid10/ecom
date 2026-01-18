@@ -5,16 +5,26 @@ import { navbarItems } from "../navbar/navbaritems"
 import { FaFacebook, FaGithub, FaInstagram } from "react-icons/fa";
 import SocialButton from "./SocialButton";
 import Image from "next/image";
-export default function Footer() {
+export default function Footer({ isTenant = false,slug }: {
+    isTenant: boolean
+    slug?:string
+}) {
     const pathname = usePathname()
     return (
         <footer className='h-56 py-4 w-full bg-white border-t border-gray-800'>
             <div className='relative h-full max-w-7xl gap-4 mx-auto px-4 flex flex-col items-center justify-center'>
+                {isTenant && slug ? 
                 <Link href={"/"}>
+                    <h1 className='font-dance capitalize font-semibold text-3xl md:text-4xl '>
+                        {slug}'s K-Shopify
+                    </h1>
+                </Link>
+                :   <Link href={"/"}>
                     <h1 className='font-dance font-semibold text-3xl md:text-4xl '>
                         K-Shopify
                     </h1>
-                </Link>
+                </Link>}
+              
                 <div className="flex flex-row gap-6 items-center">
                     {navbarItems.map((nav, _) =>
                         <Link
@@ -65,15 +75,24 @@ export default function Footer() {
                 <div className="h-[0.5px] w-full  bg-black" />
                 <div className="flex gap-2 items-center">
                     <h1 className="text-sm text-gray-800">Powered By:</h1>
-                    <div className="relative h-6.5 w-25 md:h-7 md:w-30">
-                          <Image
-                            fill
-                        alt="payload"
-                        className="object-contain"
-                        src={"/pictures/payload.svg"}
-                    />
-                    </div>
-                  
+                 
+                        {isTenant ? <Link href={"/"}>
+                            <h1 className='font-dance font-semibold text-2xl md:text-2xl '>
+                                K-Shopify
+                            </h1>
+                        </Link> :
+                           <div className="relative h-6.5 w-25 md:h-7 md:w-30">
+                            <Image
+                                fill
+                                alt="payload"
+                                className="object-contain"
+                                src={"/pictures/payload.svg"}
+                            />
+                             </div>
+                        }
+
+                   
+
                 </div>
 
 

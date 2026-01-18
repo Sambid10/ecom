@@ -6,7 +6,7 @@ interface Props {
 }
 export default function SearchInput({ disabled }: Props) {
     return (
-        <div className="w-full bg-background ">
+        <div className="w-full bg-background pb-2">
             <div className="relative w-full lg:max-w-300 lg:flex lg:mx-auto">
                 <Input
                     placeholder="Search Products"

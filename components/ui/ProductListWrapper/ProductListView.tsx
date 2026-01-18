@@ -8,8 +8,9 @@ import ProductList from "../productList/ProductList"
 interface Props {
   category?: string
   subcategory?: string
+  tenantSlug?:string
 }
-export default function ProductListView({ category, subcategory }: Props) {
+export default function ProductListView({ category, subcategory ,tenantSlug}: Props) {
   return (
     <div className='grid gap-2 grid-cols-1 lg:grid-cols-6 xl:grid-cols-10 pb-20  relative '>
       <div className="lg:col-span-2 flex flex-col gap-2 w-full pb-4 relative">
@@ -44,7 +45,7 @@ export default function ProductListView({ category, subcategory }: Props) {
 
         <Suspense fallback={<ProductskeletonWrapper />}>
           <ErrorBoundary fallback={<p>Error fetching Products.Please try again.</p>}>
-          {subcategory ? <ProductList category={subcategory} /> : <ProductList category={category} />}
+          {subcategory ? <ProductList tenantSlug={tenantSlug} category={subcategory} /> : <ProductList category={category} tenantSlug={tenantSlug}  />}
           </ErrorBoundary>
         </Suspense>
       </div>

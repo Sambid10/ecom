@@ -18,11 +18,12 @@ import {
 } from "@/components/ui/pagination"
 
 interface Props {
-  category?: string
+  category?: string,
+  tenantSlug?:string
 }
 const DEFAULT_PAGE = 1
 const DEFAULT_TOTAL_ITEMS = 6
-export default function ProductList({ category }: Props) {
+export default function ProductList({ category ,tenantSlug}: Props) {
   const [filters] = useProductFilter()
   const search = useSearchParams()
   const pathname = usePathname()
@@ -34,6 +35,7 @@ export default function ProductList({ category }: Props) {
   const { data } = useSuspenseQuery(
     trpc.products.getMany.queryOptions({
       categorySlug: category,
+      tenantSlug:tenantSlug,
       page: Number(page) < 1 ? DEFAULT_PAGE : Number(page),
       limit: Number(totalLimit) < 1 ? DEFAULT_TOTAL_ITEMS : Number(totalLimit),
       ...filters,

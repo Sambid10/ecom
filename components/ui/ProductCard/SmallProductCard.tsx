@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { useState } from "react"
+import React, { useState } from "react"
 interface Props {
     id: string,
     name: string,
@@ -16,6 +16,8 @@ interface Props {
 }
 import { AnimatePresence, motion } from "motion/react"
 import { StarIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { generateTenantUrl } from "@/lib/utils"
 
 export default function SmallProductCard({
     id,
@@ -30,9 +32,13 @@ export default function SmallProductCard({
     hoveredId,
     setHoveredId
 }: Props) {
-
+    const router = useRouter()
     const isHovered = hoveredId === id
-
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        e.preventDefault()
+        router.push(generateTenantUrl(authorUsername))
+    }
     return (
         <div
             onMouseEnter={() => setHoveredId(id)}
@@ -60,7 +66,9 @@ export default function SmallProductCard({
                                 className="line-clamp-2 text-base font-medium">{name}</h1>
                         </span>
 
-                        <div className="flex items-center gap-2">
+                        <div
+                            onClick={handleClick}
+                            className="flex items-center gap-2">
 
                             <img
                                 alt="auth"
@@ -68,7 +76,9 @@ export default function SmallProductCard({
                                 className="rounded-full h-7 w-7 object-cover shrink-0  border border-gray-400"
                             />
 
-                            <p className="text-sm underline font-medium underline-offset-2 capitalize">{authorUsername}</p>
+                            <p className="text-sm font-medium capitalize text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-700 hover:border-blue-600 border-b border-transparent underline-offset-2">
+                                {authorUsername}
+                            </p>
                         </div>
                         {reviewCount > 0 &&
                             <div className="flex items-center gap-1">
@@ -93,7 +103,7 @@ export default function SmallProductCard({
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.7 }}
                         transition={{ duration: 0.2, ease: "easeIn" }}
-                        className="absolute inset-0 bg-black/10 rounded-md pointer-events-none"
+                        className="absolute inset-0 bg-stone-500/10 rounded-md pointer-events-none"
                     />
                 )}
             </AnimatePresence>

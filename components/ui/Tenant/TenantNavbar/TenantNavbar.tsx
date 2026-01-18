@@ -1,22 +1,25 @@
 "use client"
 import Link from 'next/link'
-import { NavBarItem } from './navbaritems'
+import { NavBarItem } from '../../navbar/navbaritems'
 import CustomButton from '@/components/ui/customButton'
 import { LayoutDashboard, LayoutDashboardIcon, MenuIcon } from 'lucide-react'
 import { useState } from 'react'
-import NavbarSidebar from './navbarSidebar'
+import NavbarSidebar from '../../navbar/navbarSidebar'
 import { AnimatePresence } from 'motion/react'
 import { useTRPC } from '@/trpc/client'
-import { useQuery } from '@tanstack/react-query'
-import Loading from '../Loading/Loading'
-
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import Loading from '../../Loading/Loading'
 import { Tenant } from '@/payload-types'
-export default function Navbar() {
+export default function TenantNavbar({ tenantSlug }: {
+    tenantSlug: string
+}) {
     const trpc = useTRPC()
     const { data, isLoading } = useQuery(trpc.auth.session.queryOptions())
     const [navSidebar, setnavSidebar] = useState(false)
     const tenant = data?.user?.tenants?.[0]?.tenant as Tenant | undefined
-
+    const {data:tenantdata}=useSuspenseQuery(trpc.tenant.getOne.queryOptions({
+        slug:tenantSlug
+    }))
     let tenantImageUrl: string | null = null
 
     if (tenant && tenant.image && typeof tenant.image !== "string") {
@@ -27,11 +30,9 @@ export default function Navbar() {
         <nav className='h-16 w-full bg-background'>
             <div className='relative h-full max-w-360 mx-auto px-4 flex items-center justify-between'>
                 {/* Logo */}
-                <Link href={"/"}>
-                    <h1 className='font-dance font-semibold text-2xl md:text-3xl bg-clip-text text-transparent bg-linear-to-r from-[#000000] to-gray-800'>
-                        K-Shopify
-                    </h1>
-                </Link>
+               <Link href={"/"}>                     <h1 className='font-dance capitalize font-semibold text-2xl md:text-3xl bg-clip-text text-transparent bg-linear-to-r from-[#000000] to-gray-800'>
+                       {tenantdata.name}'s K-Shopify                     </h1>
+               </Link>
 
                 <div className='lg:absolute lg:left-1/2 lg:top-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 hidden lg:flex'>
                     <NavBarItem />

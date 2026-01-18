@@ -15,7 +15,8 @@ interface Props {
 }
 import { AnimatePresence, motion } from "motion/react"
 import { StarIcon } from "lucide-react"
-
+import { useRouter } from "next/navigation"
+import { generateTenantUrl } from "@/lib/utils"
 export default function ProductCard({
     id,
     authorImageUrl,
@@ -29,7 +30,12 @@ export default function ProductCard({
     hoveredId,
     setHoveredId
 }: Props) {
-
+    const router=useRouter()
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        e.preventDefault()
+        router.push(generateTenantUrl(authorUsername))
+    }
     const isHovered = hoveredId === id
     return (
         <div
@@ -58,15 +64,19 @@ export default function ProductCard({
                         className="line-clamp-2 text-base font-medium">{name}</h1>
                         </span>
 
-                        <div className="flex items-center gap-2">
-                        
-                                <img
+                                              <div
+                            onClick={handleClick}
+                            className="flex items-center gap-2">
+
+                            <img
                                 alt="auth"
-                                src={authorImageUrl ? authorImageUrl : "/pictures/avatar.png" }
-                                className="rounded-full h-9 w-9 object-cover shrink-0  border border-gray-400"
-                                />
-                            
-                            <p className="text-sm underline font-medium underline-offset-2 capitalize">{authorUsername}</p>
+                                src={authorImageUrl ? authorImageUrl : "/pictures/avatar.png"}
+                                className="rounded-full h-7 w-7 object-cover shrink-0  border border-gray-400"
+                            />
+
+                            <p className="text-sm font-medium capitalize text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-700 hover:border-blue-600 border-b border-transparent">
+                                {authorUsername}
+                            </p>
                         </div>
                         {reviewCount > 0 && 
                             <div className="flex items-center gap-1">
@@ -91,7 +101,7 @@ export default function ProductCard({
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.7 }}
                         transition={{ duration: 0.2,ease:"easeIn" }}
-                        className="absolute inset-0 bg-black/10 rounded-md pointer-events-none"
+                        className="absolute inset-0 bg-stone-500/10 rounded-md pointer-events-none"
                     />
                 )}
             </AnimatePresence>
