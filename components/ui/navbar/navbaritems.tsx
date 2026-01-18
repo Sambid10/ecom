@@ -37,7 +37,7 @@ export const NavBarItem = () => {
                 key={nav.id}
                 href={nav.href}
                 >
-                    <h1 className={` text-white px-4 lg:px-6 py-2 mix-blend-difference relative z-40 `}>{nav.children}</h1>
+                    <h1 className={` text-white px-4 lg:px-6 py-2 mix-blend-difference relative z-40 text-[15px]`}>{nav.children}</h1>
                 </Link>
             )}
             <motion.div
