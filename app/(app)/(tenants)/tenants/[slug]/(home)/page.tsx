@@ -5,7 +5,6 @@ import { getQueryClient } from "@/trpc/server"
 import { dehydrate } from "@tanstack/react-query"
 import { trpc } from "@/trpc/server"
 import ProductListView from "@/components/ui/ProductListWrapper/ProductListView"
-import ContainerWrapper from "@/components/ui/containerWrapper/ContainerWrapper"
 interface Props {
     searchParams: Promise<SearchParams>
     params: Promise<{ slug: string }>

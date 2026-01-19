@@ -43,8 +43,7 @@ export default function ProductCard({
             onMouseLeave={() => setHoveredId(null)}
             className="relative">
             <Link
-                href="/"
-
+                href={`/tenants/${authorUsername}/product/${id}`}
             >
                 <div className="border border-gray-600 rounded-md bg-background overflow-hidden h-full flex flex-col shadow-xs">
                     <div className="relative aspect-square">
@@ -66,7 +65,7 @@ export default function ProductCard({
 
                                               <div
                             onClick={handleClick}
-                            className="flex items-center gap-2">
+                            className="flex items-center gap-2 w-fit">
 
                             <img
                                 alt="auth"

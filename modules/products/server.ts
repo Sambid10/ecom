@@ -5,6 +5,19 @@ import { Category, Media, Tenant } from "@/payload-types";
 import { sortValues } from "@/hooks/searchParams";
 
 export const productRouter = createTRPCRouter({
+  getOne:baseProcedure.input(
+    z.object({
+      id:z.string()
+    })
+  ).query(async({ctx,input})=>{
+    const{id}=input
+    const product=await ctx.payload.findByID({
+      collection:"products",
+      depth:1,
+      id:id
+    })
+    return {product, image: product.image as Media,}
+  }),
   getMany: baseProcedure.input(
     z.object({
       page:z.number().default(1),

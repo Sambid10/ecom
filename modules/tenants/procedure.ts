@@ -1,3 +1,4 @@
+import { Media } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import * as z from "zod"
@@ -17,7 +18,7 @@ export const TenantsRouter = createTRPCRouter({
         })
         const tenant = data.docs[0]
         if (!tenant) throw new TRPCError({ code: "NOT_FOUND", message: "No Tenant Found" })
-        return tenant
+        return {tenant,image:tenant.image as Media}
     })
 
 })

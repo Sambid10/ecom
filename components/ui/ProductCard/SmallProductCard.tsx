@@ -45,7 +45,7 @@ export default function SmallProductCard({
             onMouseLeave={() => setHoveredId(null)}
             className="relative bg-white">
             <Link
-                href="/"
+                href={`/tenants/${authorUsername}/product/${id}`}
 
             >
                 <div className="border col-span-1 border-gray-600 rounded-md  overflow-hidden h-full flex flex-col shadow-xs">
@@ -68,7 +68,7 @@ export default function SmallProductCard({
 
                         <div
                             onClick={handleClick}
-                            className="flex items-center gap-2">
+                            className="flex items-center gap-2 w-fit">
 
                             <img
                                 alt="auth"

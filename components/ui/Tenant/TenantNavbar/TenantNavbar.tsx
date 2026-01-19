@@ -31,7 +31,7 @@ export default function TenantNavbar({ tenantSlug }: {
             <div className='relative h-full max-w-360 mx-auto px-4 flex items-center justify-between'>
                 {/* Logo */}
                <Link href={"/"}>                     <h1 className='font-dance capitalize font-semibold text-2xl md:text-3xl bg-clip-text text-transparent bg-linear-to-r from-[#000000] to-gray-800'>
-                       {tenantdata.name}'s K-Shopify                     </h1>
+                       {tenantdata.tenant.name}'s K-Shopify                     </h1>
                </Link>
 
                 <div className='lg:absolute lg:left-1/2 lg:top-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 hidden lg:flex'>

@@ -36,7 +36,7 @@ export default function Footer({ isTenant = false,slug }: {
                             <h1
                                 className={`relative text-sm md:text-[15px]
                                     after:absolute after:left-0 after:-bottom-1
-                                    after:h-[1px] after:w-full
+                                    after:h-px after:w-full
                                     after:origin-left after:scale-x-0
                                     after:bg-black after:transition-transform after:duration-300
                                       group-hover:after:scale-x-100

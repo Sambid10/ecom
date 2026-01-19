@@ -42,15 +42,12 @@ export default async function layout({ children, params }: { children: React.Rea
                 </div>
                 <Suspense
                     fallback={<Loading divclassName='h-16 flex items-center justify-center' />}>
-                    <ErrorBoundary fallback={<p>Error fetching categories.Please try again.</p>}>
-
+                    {/* <ErrorBoundary fallback={<p>Error fetching categories.Please try again.</p>}>
                         <SearchFilters />
-
-
-                    </ErrorBoundary>
+                    </ErrorBoundary> */}
                 </Suspense>
             </HydrationBoundary>
-            <ContainerWrapper>
+            <ContainerWrapper className='mt-2'>
                 {children}
             </ContainerWrapper>
             <Footer isTenant={true} slug={slug} /></>
