@@ -7,10 +7,14 @@ import { useTRPC } from "@/trpc/client"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import Link from "next/link"
 import ProductPageSkeleton from "../skeltons/ProductPageSkeleton"
-import { Button } from "../button"
-import { ShoppingCart, Star } from "lucide-react"
+import dynamic from "next/dynamic"
+import { Star } from "lucide-react"
 import { Progress } from "../progress"
-
+import Loading from "../Loading/Loading"
+const CartButton =dynamic(()=>import("../CartButton/CartButton"),{
+  ssr:false,
+  loading:()=><Loading divclassName="h-11"/>
+})
 export default function ProductPage({ productId, tenantSlug }: { productId: string; tenantSlug: string }) {
   return (
     <Suspense fallback={<ProductPageSkeleton />}>
@@ -78,10 +82,10 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
         </div>
       )}
 
-      {/* REST OF PAGE */}
+      {/* last ma sabai vako PAGE */}
       <div className="w-full lg:max-w-300 mx-auto bg-white rounded-b-md border border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-6">
-          {/* LEFT SECTION */}
+          {/* LEFT ko SECTION */}
           <div className="md:col-span-4 border md:border-r-gray-800 border-b-gray-800 md:border-b-transparent border-l-transparent border-t-transparent">
             <div className="px-4">
               <div className="-mx-4.25 border-b border-gray-800 pb-4 pt-4">
@@ -120,14 +124,11 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
             </div>
           </div>
 
-          {/* RIGHT SECTION */}
+          {/* RIGHT ko SECTION */}
           <div className="md:col-span-2">
             <div className="border-b border-gray-800">
               <div className="py-4 px-4 flex flex-col gap-2">
-                <Button className="cursor-pointer xs:w-[60%] w-[70%] mx-auto md:w-full h-11 rounded-full">
-                  <ShoppingCart className="h-9 w-9" />
-                  <span className="text-base">Add to Cart</span>
-                </Button>
+                    <CartButton tenantSlug={tenantSlug} productId={productId}/>
                 <h1 className="text-center text-sm text-gray-800">
                   {data.product.refundPolicy} money back guarantee.
                 </h1>

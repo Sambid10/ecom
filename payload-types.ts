@@ -231,7 +231,10 @@ export interface Product {
   price: number;
   category?: (string | null) | Category;
   image?: (string | null) | Media;
-  'additional images'?: (string | Media)[] | null;
+  /**
+   * Atleast add 1 image for product validation.
+   */
+  'additional images': (string | Media)[];
   refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refund') | null;
   tags?: (string | Tag)[] | null;
   updatedAt: string;

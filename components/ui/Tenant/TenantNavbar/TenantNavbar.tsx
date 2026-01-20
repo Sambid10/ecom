@@ -10,6 +10,7 @@ import { useTRPC } from '@/trpc/client'
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import Loading from '../../Loading/Loading'
 import { Tenant } from '@/payload-types'
+import CheckoutButton from '../../CheckoutButton/CheckoutButton'
 export default function TenantNavbar({ tenantSlug }: {
     tenantSlug: string
 }) {
@@ -60,6 +61,7 @@ export default function TenantNavbar({ tenantSlug }: {
                                 <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white ' text='Start Selling' href='/sign-up' />
                             </div>
                         }
+                        <CheckoutButton tenantSlug={tenantSlug} hideIfEmpty/>
                         <div className="block lg:hidden">
                             <button
                                 onClick={() => setnavSidebar(true)}

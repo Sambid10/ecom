@@ -33,7 +33,10 @@ export const Products: CollectionConfig = {
             type:"upload",
             relationTo:"media",
             hasMany:true,
-            required:false
+            required:true,
+             admin: {
+                description: "Atleast add 1 image for product validation."
+            },
         },
         {
             name: "refundPolicy",
