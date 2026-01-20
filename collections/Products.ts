@@ -27,7 +27,15 @@ export const Products: CollectionConfig = {
             name: "image",
             type: "upload",
             relationTo: "media"
-        }, {
+        }, 
+        {
+            name:"additional images",
+            type:"upload",
+            relationTo:"media",
+            hasMany:true,
+            required:false
+        },
+        {
             name: "refundPolicy",
             type: "select",
             options: ["30-day", "14-day", "7-day", "3-day", "1-day", "no-refund"],

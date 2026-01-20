@@ -231,6 +231,7 @@ export interface Product {
   price: number;
   category?: (string | null) | Category;
   image?: (string | null) | Media;
+  'additional images'?: (string | Media)[] | null;
   refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refund') | null;
   tags?: (string | Tag)[] | null;
   updatedAt: string;
@@ -408,6 +409,7 @@ export interface ProductsSelect<T extends boolean = true> {
   price?: T;
   category?: T;
   image?: T;
+  'additional images'?: T;
   refundPolicy?: T;
   tags?: T;
   updatedAt?: T;

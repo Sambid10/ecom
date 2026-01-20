@@ -16,7 +16,7 @@ export const productRouter = createTRPCRouter({
       depth:1,
       id:id
     })
-    return {product, image: product.image as Media,}
+    return {product, image: product.image as Media,additionalimage:product["additional images"] as Media[]}
   }),
   getMany: baseProcedure.input(
     z.object({
