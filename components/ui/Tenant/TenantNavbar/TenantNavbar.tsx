@@ -61,7 +61,7 @@ export default function TenantNavbar({ tenantSlug }: {
                                 <CustomButton className='bg-linear-to-r from-[#121221] to-stone-700 text-white ' text='Start Selling' href='/sign-up' />
                             </div>
                         }
-                        <CheckoutButton tenantSlug={tenantSlug} hideIfEmpty/>
+                        <CheckoutButton tenantSlug={tenantSlug}/>
                         <div className="block lg:hidden">
                             <button
                                 onClick={() => setnavSidebar(true)}
