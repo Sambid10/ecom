@@ -230,7 +230,7 @@ export interface Product {
   description?: string | null;
   price: number;
   category?: (string | null) | Category;
-  image?: (string | null) | Media;
+  image: string | Media;
   /**
    * Atleast add 1 image for product validation.
    */

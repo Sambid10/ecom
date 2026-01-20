@@ -26,7 +26,8 @@ export const Products: CollectionConfig = {
         }, {
             name: "image",
             type: "upload",
-            relationTo: "media"
+            relationTo: "media",
+             required:true,
         }, 
         {
             name:"additional images",
