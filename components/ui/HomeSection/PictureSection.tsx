@@ -34,7 +34,7 @@ export default function PictureSection() {
         }
         return next
       })
-    }, 60000)
+    }, 30000)
 
     return () => clearInterval(handler)
   }, [])

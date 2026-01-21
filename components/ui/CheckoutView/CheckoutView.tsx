@@ -7,6 +7,8 @@ import { toast } from "sonner"
 import Image from "next/image"
 import { Button } from "../button"
 import { CheckSquareIcon, ChevronRight } from "lucide-react"
+import NoProduct from "../skeltons/NoProduct"
+import NoCart from "../skeltons/NoCart"
 function ProductSkeleton() {
   return (
     <div className="w-full flex gap-2 border-b border-gray-800 animate-pulse">
@@ -54,12 +56,12 @@ export default function CheckoutView({ slug }: { slug: string }) {
 
   const price = data?.docs.map((doc) => doc.price) ?? []
   const total = price.reduce((sum, p) => sum + p, 0)
-
+ if(data?.docs.length ===0){
+    return  <NoCart/>
+ }
   return (
     <div className="mt-4">
-      <h1 className='capitalize mb-4 flex items-center font-normal text-2xl underline underline-offset-2'>
-        <ChevronRight /> Order Summary
-      </h1>
+      
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
