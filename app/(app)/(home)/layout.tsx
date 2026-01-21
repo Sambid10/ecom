@@ -21,7 +21,7 @@ export default async function layout({ children }: { children: React.ReactNode }
       <div className="sticky top-0 z-50">
         <Navbar />
         <ContainerWrapper>
-          <SearchInput />
+          <SearchInput className='lg:max-w-300'/>
         </ContainerWrapper>
       </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
@@ -34,7 +34,7 @@ export default async function layout({ children }: { children: React.ReactNode }
       </HydrationBoundary>
 
       {children}
-      <Footer />
+      <Footer isTenant={false}/>
     </div>
   )
 }

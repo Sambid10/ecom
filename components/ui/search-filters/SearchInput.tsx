@@ -1,13 +1,15 @@
 import { SearchIcon } from "lucide-react"
 import { Input } from "../input"
+import { cn } from "@/lib/utils"
 
 interface Props {
     disabled?: boolean
+    className?:string
 }
-export default function SearchInput({ disabled }: Props) {
+export default function SearchInput({ disabled,className }: Props) {
     return (
         <div className="w-full bg-background pb-2">
-            <div className="relative w-full lg:max-w-300 lg:flex lg:mx-auto">
+            <div className={cn("relative w-full lg:flex lg:mx-auto",className)}>
                 <Input
                     placeholder="Search Products"
                     className="border shadow-md border-black rounded-full bg-white h-10 pl-14" />

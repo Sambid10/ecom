@@ -43,9 +43,9 @@ export default function ProductListView({ category, subcategory ,tenantSlug}: Pr
       </div>
       <div className='lg:col-span-4 xl:col-span-8 overflow-y-auto min-h-dvh gap-y-6 pt-4 lg:pt-10 lg:ml-4'>
 
-        <Suspense fallback={<ProductskeletonWrapper />}>
+        <Suspense fallback={<ProductskeletonWrapper number={3} />}>
           <ErrorBoundary fallback={<p>Error fetching Products.Please try again.</p>}>
-          {subcategory ? <ProductList tenantSlug={tenantSlug} category={subcategory} /> : <ProductList category={category} tenantSlug={tenantSlug}  />}
+          {subcategory ? <ProductList isTenant={false} tenantSlug={tenantSlug} category={subcategory} /> : <ProductList isTenant={false} category={category} tenantSlug={tenantSlug}  />}
           </ErrorBoundary>
         </Suspense>
       </div>

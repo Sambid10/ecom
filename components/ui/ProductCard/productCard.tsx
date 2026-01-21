@@ -81,10 +81,14 @@ export default function ProductCard({
                             </p>
                         </div>
                         {reviewCount > 0 && 
-                            <div className="flex items-center gap-1">
-                                <StarIcon className="size-4 fill-yellow-500"/>
+                            <div className="flex items-center gap-1 justify-between">
+                                <div className="flex items-center gap-1">
+                                     <StarIcon className="size-4 fill-yellow-500"/>
                                 <p className="text-sm">{reviewRating} ({reviewCount})</p>
-                                
+                                </div>
+
+                               
+                                  {cart.isProductInCart(id) && <div className="text-sm flex items-center gap-1 bg-green-100 rounded-md p-1"><Check className="h-4 w-4 text-green-700"/><h1 className="font-medium text-green-700">Added to Cart.</h1> </div>}
                             </div>
                         }
                     </div>
@@ -93,7 +97,7 @@ export default function ProductCard({
                             style:"currency",
                             currency:"USD"
                         }).format(Number(price))}</h1>
-                        {cart.isProductInCart(id) && <div className="text-sm flex items-center gap-1 bg-green-100 rounded-md p-1"><Check className="h-4 w-4 text-green-700"/><h1 className="font-medium text-green-700">Added to Cart.</h1> </div>}
+                      
                      </div>
                 </div>
             </Link>

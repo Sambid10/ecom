@@ -15,7 +15,7 @@ export default function CheckoutButton({ tenantSlug, className }: Props) {
                 title="Cart"
                 className="h-10 w-10 rounded-full px-5 flex items-center justify-center" asChild>
                 <Link
-                    href={`${generateTenantUrl(tenantSlug)}2/checkout`}
+                    href={`${generateTenantUrl(tenantSlug)}/checkout`}
                 >
                     <ShoppingCartIcon />
 
