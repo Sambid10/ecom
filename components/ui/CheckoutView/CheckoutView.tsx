@@ -1,7 +1,7 @@
 "use client"
 import { useCart } from "@/modules/zustand/checkout/hooks/use-cart"
 import { useTRPC } from "@/trpc/client"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -9,6 +9,8 @@ import { Button } from "../button"
 import { CheckSquareIcon, ChevronRight } from "lucide-react"
 import NoProduct from "../skeltons/NoProduct"
 import NoCart from "../skeltons/NoCart"
+import { useCheckoutStates } from "@/modules/zustand/checkout/hooks/use-checkout-state"
+import { useRouter } from "next/navigation"
 function ProductSkeleton() {
   return (
     <div className="w-full flex gap-2 border-b border-gray-800 animate-pulse">
@@ -40,19 +42,40 @@ function SummarySkeleton() {
 
 export default function CheckoutView({ slug }: { slug: string }) {
   const trpc = useTRPC()
-  const { productIds, clearAllCarts ,removeProduct} = useCart(slug)
-
+  const router=useRouter()
+  const { productIds ,removeProduct,clearCart} = useCart(slug)
+  const [states,setStates]=useCheckoutStates()
   const { data, error, isLoading } = useQuery(
     trpc.checkout.getProducts.queryOptions({ ids: productIds })
   )
-
+  const purchase=useMutation(trpc.checkout.purchase.mutationOptions({
+    onMutate:()=>{
+      setStates({success:false,cancel:false})
+    },
+    onSuccess:(data)=>{
+      window.location.href=data.url
+    },
+    onError:(err)=>{
+      if(err.data?.code === "UNAUTHORIZED"){
+        router.push("/sign-in")
+      }
+      toast.error(err.message)
+    }
+  }))
+  useEffect(()=>{
+   
+    if(states.success){
+      clearCart();
+       setStates({cancel:false,success:false})
+    }
+  },[states.success,clearCart,setStates])
   useEffect(() => {
     if (!error) return
     if (error.data?.code === "NOT_FOUND") {
-      clearAllCarts()
+      clearCart()
       toast.warning("Invalid products found, cart cleared!!")
     }
-  }, [error])
+  }, [error,clearCart])
 
   const price = data?.docs.map((doc) => doc.price) ?? []
   const total = price.reduce((sum, p) => sum + p, 0)
@@ -61,10 +84,7 @@ export default function CheckoutView({ slug }: { slug: string }) {
  }
   return (
     <div className="mt-4">
-      
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
         <div className="border border-b-0 border-gray-800 rounded-md bg-white overflow-hidden flex flex-col">
           {isLoading && (
             <>
@@ -132,7 +152,9 @@ export default function CheckoutView({ slug }: { slug: string }) {
               </h1>
             </div>
             <div className="w-full flex justify-center">
-              <Button className="w-[80%] cursor-pointer h-11 text-base">
+              <Button 
+              onClick={()=>purchase.mutate({tenantSlug:slug,productIds:productIds})}
+              className="w-[80%] cursor-pointer h-11 text-base">
                 <CheckSquareIcon /> Checkout
               </Button>
             </div>
