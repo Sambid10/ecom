@@ -26,9 +26,9 @@ export default function TenantNavbar({ tenantSlug }: {
     }))
     let tenantImageUrl: string | null = null
     const handleClick = () => {
-        setProfileOpen((prev) => !prev)
+        setProfileOpen(true)
     }
-    useOutsideClick({ handler: handleClick, ref })
+    useOutsideClick({ handler:()=> setProfileOpen(false), ref })
     if (tenant && tenant.image && typeof tenant.image !== "string") {
         tenantImageUrl = tenant.image.url ?? null
     }
@@ -52,7 +52,7 @@ export default function TenantNavbar({ tenantSlug }: {
                                 ref={ref}
                                 className='relative'>
                                 <img
-                                    onClick={handleClick}
+                                    onClick={()=>setProfileOpen((prev)=>!prev)}
                                     src={tenantImageUrl ? tenantImageUrl : "/pictures/avatar.png"}
                                     alt={tenant?.name ?? "Tenant Image"}
                                     className="h-10 w-10 rounded-full cursor-pointer object-cover border border-gray-400/80"
