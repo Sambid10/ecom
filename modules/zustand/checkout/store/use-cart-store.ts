@@ -6,12 +6,12 @@ interface Cart {
 }
 
 interface CartState {
-  tenantCarts: Record<string, Cart>
-  addProduct: (tenantSlug: string, productId: string) => void
-  removeProduct: (tenantSlug: string, productId: string) => void
-  clearCart: (tenantSlug: string) => void
+  tenantCarts: Record<string, Record<string, Cart>>
+  addProduct: (tenantSlug: string, productId: string, userId: string) => void
+  removeProduct: (tenantSlug: string, productId: string, userId: string) => void
+  clearCart: (tenantSlug: string, userId: string) => void
   clearAllCarts: () => void
-  getCartByTenant: (tenantSlug: string) => string[]
+  getCartByTenant: (tenantSlug: string, userId: string) => string[]
 }
 
 export const useCartStore = create<CartState>()(
@@ -19,27 +19,35 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       tenantCarts: {},
 
-      addProduct: (tenantSlug, productId) =>
+      addProduct: (tenantSlug, productId, userId) =>
         set((state) => {
-          const existing = state.tenantCarts[tenantSlug]?.productIds || []
+          const tenant = state.tenantCarts[tenantSlug] || {}
+          const userCart = tenant[userId]?.productIds || []
           return {
             tenantCarts: {
               ...state.tenantCarts,
               [tenantSlug]: {
-                productIds: [...existing, productId]
+                ...tenant,
+                [userId]: {
+                  productIds: [...userCart, productId]
+                }
               }
             }
           }
         }),
 
-      removeProduct: (tenantSlug, productId) =>
+      removeProduct: (tenantSlug, productId, userId) =>
         set((state) => {
-          const existing = state.tenantCarts[tenantSlug]?.productIds || []
+          const tenant = state.tenantCarts[tenantSlug] || {};
+          const userCart = tenant[userId]?.productIds || [];
           return {
             tenantCarts: {
               ...state.tenantCarts,
               [tenantSlug]: {
-                productIds: existing.filter((id) => id !== productId)
+                ...tenant,
+                [userId]: {
+                  productIds: userCart.filter((id) => id !== productId)
+                }
               }
             }
           }
@@ -47,15 +55,21 @@ export const useCartStore = create<CartState>()(
 
       clearAllCarts: () => set({ tenantCarts: {} }),
 
-      clearCart: (tenantSlug) =>
+      clearCart: (tenantSlug, userId) =>
         set((state) => {
-          const newcarts = { ...state.tenantCarts }
-          delete newcarts[tenantSlug]
-          return { tenantCarts: newcarts }
+          const tenant = state.tenantCarts[tenantSlug] || {}
+          const newTenant = { ...tenant }
+          delete newTenant[userId]
+          return {
+            tenantCarts: {
+              ...state.tenantCarts,
+              [tenantSlug]: newTenant
+            }
+          }
         }),
 
-      getCartByTenant: (tenantSlug) =>
-        get().tenantCarts[tenantSlug]?.productIds || []
+      getCartByTenant: (tenantSlug, userId) =>
+        get().tenantCarts[tenantSlug]?.[userId]?.productIds || [],
     }),
     {
       name: "kpopshopify-cart",

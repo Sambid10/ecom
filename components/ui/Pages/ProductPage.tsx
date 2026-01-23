@@ -4,17 +4,21 @@ import { Fragment, Suspense, useState, useMemo } from "react"
 import Image from "next/image"
 import { ErrorBoundary } from "react-error-boundary"
 import { useTRPC } from "@/trpc/client"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import Link from "next/link"
 import ProductPageSkeleton from "../skeltons/ProductPageSkeleton"
 import dynamic from "next/dynamic"
-import { Star } from "lucide-react"
+import { Check, Star } from "lucide-react"
 import { Progress } from "../progress"
 import Loading from "../Loading/Loading"
-const CartButton =dynamic(()=>import("../CartButton/CartButton"),{
-  ssr:false,
-  loading:()=><Loading divclassName="h-11"/>
+import { Button } from "../button"
+
+// CartButton dynamically imported with no SSR
+const CartButton = dynamic(() => import("../CartButton/CartButton"), {
+  ssr: false,
+  loading: () => <Loading divclassName="h-11" />,
 })
+
 export default function ProductPage({ productId, tenantSlug }: { productId: string; tenantSlug: string }) {
   return (
     <Suspense fallback={<ProductPageSkeleton />}>
@@ -27,15 +31,19 @@ export default function ProductPage({ productId, tenantSlug }: { productId: stri
 
 function ProductPageSuspense({ productId, tenantSlug }: { productId: string; tenantSlug: string }) {
   const trpc = useTRPC()
+
+  // Fetch product and tenant data using suspense queries
   const { data } = useSuspenseQuery(trpc.products.getOne.queryOptions({ id: productId }))
   const { data: tenantdata } = useSuspenseQuery(trpc.tenant.getOne.queryOptions({ slug: tenantSlug }))
 
+  // Session query
+  const { data: session } = useQuery(trpc.auth.session.queryOptions())
+
   const additionalImages = data.additionalimage?.map((img) => img.url) ?? []
   const mainImageDefault = data.image.url ?? "/pictures/place.png"
-
   const [mainImage, setMainImage] = useState<string>(mainImageDefault)
 
-  // detect touch/phone screens
+  // Detect touch screens
   const isTouch = useMemo(() => {
     if (typeof window === "undefined") return false
     return window.matchMedia("(pointer: coarse)").matches
@@ -58,9 +66,7 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
             onMouseEnter={!isTouch ? () => handleSelect(mainImageDefault) : undefined}
             onClick={isTouch ? () => handleSelect(mainImageDefault) : undefined}
             className={`h-30 w-30 relative rounded-sm cursor-pointer border ${
-              mainImage === mainImageDefault
-                ? "border-black border-2 brightness-100"
-                : "border-white brightness-75"
+              mainImage === mainImageDefault ? "border-black border-2 brightness-100" : "border-white brightness-75"
             }`}
           >
             <Image fill alt="thumb" className="object-cover rounded-sm" src={mainImageDefault} />
@@ -82,10 +88,10 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
         </div>
       )}
 
-      {/* last ma sabai vako PAGE */}
+      {/* PRODUCT DETAILS */}
       <div className="w-full lg:max-w-300 mx-auto bg-white rounded-b-md border border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-6">
-          {/* LEFT ko SECTION */}
+          {/* LEFT SECTION */}
           <div className="md:col-span-4 border md:border-r-gray-800 border-b-gray-800 md:border-b-transparent border-l-transparent border-t-transparent">
             <div className="px-4">
               <div className="-mx-4.25 border-b border-gray-800 pb-4 pt-4">
@@ -124,17 +130,33 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
             </div>
           </div>
 
-          {/* RIGHT ko SECTION */}
+          {/* RIGHT SECTION */}
           <div className="md:col-span-2">
             <div className="border-b border-gray-800">
               <div className="py-4 px-4 flex flex-col gap-2">
-                    <CartButton tenantSlug={tenantSlug} productId={productId}/>
+                {/* PURCHASED / CART BUTTON */}
+                {data.ispurchasedProduct ? (
+                  <Button className="cursor-pointer xs:w-[60%] w-[70%] mx-auto md:w-full h-11 rounded-full text-[15px] bg-green-600 hover:bg-green-500">
+                    <Check />
+                    Order Placed.
+                  </Button>
+                ) : session?.user?.id ? (
+                  <CartButton userId={session.user.id} tenantSlug={tenantSlug} productId={productId} />
+                ) : (
+                  <Link href="/sign-in">
+                    <Button className="xs:w-[60%] w-[70%] mx-auto md:w-full h-11 rounded-full text-[15px]">
+                      Add to Cart
+                    </Button>
+                  </Link>
+                )}
+
                 <h1 className="text-center text-sm text-gray-800">
                   {data.product.refundPolicy} money back guarantee.
                 </h1>
               </div>
             </div>
 
+            {/* RATINGS SECTION */}
             <div className="flex flex-col gap-2 py-4 px-4">
               <div className="flex justify-between">
                 <h1>Ratings</h1>
@@ -157,7 +179,6 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </div>

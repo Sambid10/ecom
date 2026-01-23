@@ -77,6 +77,7 @@ export default function ProductList({ category, tenantSlug, className, isTenant 
       >
         {data.docs.map((product) => (
           <ProductCard
+            isPurchased={product.isPurchased}
             key={product.id}
             id={product.id}
             description={product.description!}

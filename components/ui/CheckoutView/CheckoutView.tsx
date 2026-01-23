@@ -6,8 +6,7 @@ import { useEffect } from "react"
 import { toast } from "sonner"
 import Image from "next/image"
 import { Button } from "../button"
-import { CheckSquareIcon, ChevronRight } from "lucide-react"
-import NoProduct from "../skeltons/NoProduct"
+import { CheckSquareIcon } from "lucide-react"
 import NoCart from "../skeltons/NoCart"
 import { useCheckoutStates } from "@/modules/zustand/checkout/hooks/use-checkout-state"
 import { useRouter } from "next/navigation"
@@ -43,8 +42,9 @@ function SummarySkeleton() {
 export default function CheckoutView({ slug }: { slug: string }) {
   const trpc = useTRPC()
   const router=useRouter()
-  const { productIds ,removeProduct,clearCart} = useCart(slug)
   const [states,setStates]=useCheckoutStates()
+  const {data:session}=useQuery(trpc.auth.session.queryOptions())
+  const { productIds ,removeProduct,clearCart} =useCart(slug,session?.user?.id ?? "")
   const { data, error, isLoading } = useQuery(
     trpc.checkout.getProducts.queryOptions({ ids: productIds })
   )
@@ -63,8 +63,8 @@ export default function CheckoutView({ slug }: { slug: string }) {
     }
   }))
   useEffect(()=>{
-   
-    if(states.success){
+  //  console.log("Treiggerd....")
+    if(states.success && session?.user?.id){
       clearCart();
        setStates({cancel:false,success:false})
     }

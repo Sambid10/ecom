@@ -1,38 +1,65 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
 import * as z from "zod";
-import { Category, Media, Tenant } from "@/payload-types";
+import { Category, Media, Order, Tenant } from "@/payload-types";
 import { sortValues } from "@/hooks/searchParams";
-
+import { headers as getHeader } from "next/headers";
 export const productRouter = createTRPCRouter({
-  getOne:baseProcedure.input(
+  getOne: baseProcedure.input(
     z.object({
-      id:z.string()
+      id: z.string()
     })
-  ).query(async({ctx,input})=>{
-    const{id}=input
-    const product=await ctx.payload.findByID({
-      collection:"products",
-      depth:1,
-      id:id
+  ).query(async ({ ctx, input }) => {
+    const { id } = input
+    const headers = await getHeader()
+    const session = await ctx.payload.auth({ headers })
+    const product = await ctx.payload.findByID({
+      collection: "products",
+      depth: 1,
+      id: id
     })
-    return {product, image: product.image as Media,additionalimage:product["additional images"] as Media[]}
+    let ispurchasedProduct = false
+    if (session.user) {
+      const purchasedorder = await ctx.payload.find({
+        collection: "orders",
+        depth: 1,
+        where: {
+          and: [
+            {
+              product: {
+                equals: input.id
+              }
+            }, {
+              user: {
+                equals: session.user?.id
+              }
+            },
+          ]
+        }
+      })
+      ispurchasedProduct = !!purchasedorder.docs[0]
+    }
+
+
+
+    return { product, image: product.image as Media, additionalimage: product["additional images"] as Media[], ispurchasedProduct }
   }),
   getMany: baseProcedure.input(
     z.object({
-      page:z.number().default(1),
-      limit:z.number().default(2),
+      page: z.number().default(1),
+      limit: z.number().default(2),
       categorySlug: z.string().nullable().optional(),
       minPrice: z.string().nullable().optional(),
       maxPrice: z.string().nullable().optional(),
       tags: z.array(z.string()).nullable().optional(),
       sort: z.enum(sortValues).nullable().optional(),
-      tenantSlug:z.string().nullable().optional()
+      tenantSlug: z.string().nullable().optional()
     })
   ).query(async ({ ctx, input }) => {
 
     const where: Where = {};
-
+    const headers = await getHeader()
+    const session = await ctx.payload.auth({ headers })
     // sort
     let sort: Sort = "-createdAt";
     if (input.sort === "oldest") {
@@ -56,9 +83,9 @@ export const productRouter = createTRPCRouter({
       };
     }
 
-    if(input.tenantSlug){
-      where["tenant.slug"]={
-        equals:input.tenantSlug
+    if (input.tenantSlug) {
+      where["tenant.slug"] = {
+        equals: input.tenantSlug
       }
     }
     // category
@@ -109,16 +136,42 @@ export const productRouter = createTRPCRouter({
       depth: 2,
       where,
       sort,
-      page:input.page,
-      limit:input.limit,
+      page: input.page,
+      limit: input.limit,
     });
-
+    
+    let purchasedProdcutIds:string[]=[]
+    if (session.user) {
+      const productIds=data.docs.map((prod)=>prod.id)
+      const purchasedorder = await ctx.payload.find({
+        collection: "orders",
+        depth: 1,
+        where: {
+          and: [
+            {
+              product: {
+                in:productIds
+              }
+            }, {
+              user: {
+                equals: session.user?.id
+              }
+            }
+          ]
+        }
+      })
+      purchasedProdcutIds=purchasedorder.docs.map((order)=>{
+        let product=order.product
+        return typeof product === "string" ? product : product.id
+      })
+    }
     return {
       ...data,
       docs: data.docs.map((doc) => ({
         ...doc,
         image: doc.image as Media,
-        tenant:doc.tenant as Tenant & {image:Media | null}
+        tenant: doc.tenant as Tenant & { image: Media | null },
+        isPurchased:purchasedProdcutIds.includes(doc.id)
       }))
     };
   })
