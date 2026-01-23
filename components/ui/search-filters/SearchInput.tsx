@@ -1,6 +1,7 @@
 import { SearchIcon } from "lucide-react"
 import { Input } from "../input"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 interface Props {
     disabled?: boolean
@@ -19,6 +20,11 @@ export default function SearchInput({ disabled,className }: Props) {
                     <SearchIcon className="h-5.75 w-5.75" />
                 </button>
             </div>
+            <Link
+            href={"/"}
+            >
+                Library
+            </Link>
         </div>
     )
 }

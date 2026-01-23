@@ -12,6 +12,7 @@ import { Check, Star } from "lucide-react"
 import { Progress } from "../progress"
 import Loading from "../Loading/Loading"
 import { Button } from "../button"
+import { generateTenantUrl } from "@/lib/utils"
 
 // CartButton dynamically imported with no SSR
 const CartButton = dynamic(() => import("../CartButton/CartButton"), {
@@ -136,10 +137,12 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
               <div className="py-4 px-4 flex flex-col gap-2">
                 {/* PURCHASED / CART BUTTON */}
                 {data.ispurchasedProduct ? (
-                  <Button className="cursor-pointer xs:w-[60%] w-[70%] mx-auto md:w-full h-11 rounded-full text-[15px] bg-green-600 hover:bg-green-500">
-                    <Check />
+                  <Link 
+                  href={`/library`}
+                  className="text-white flex items-center justify-center text-lg gap-2 cursor-pointer xs:w-[60%] w-[70%] mx-auto md:w-full h-11 rounded-full text-[15px] bg-green-600 hover:bg-green-500">
+                    <Check className="h-4 w-4" />
                     Order Placed.
-                  </Button>
+                  </Link>
                 ) : session?.user?.id ? (
                   <CartButton userId={session.user.id} tenantSlug={tenantSlug} productId={productId} />
                 ) : (
