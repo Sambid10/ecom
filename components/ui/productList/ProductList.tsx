@@ -25,8 +25,8 @@ interface Props {
   isTenant: boolean
 }
 
-const DEFAULT_PAGE = 1
-const DEFAULT_TOTAL_ITEMS = 8
+export const DEFAULT_PAGE = 1
+export const DEFAULT_TOTAL_ITEMS = 8
 export default function ProductList({ category, tenantSlug, className, isTenant = false }: Props) {
   const [filters] = useProductFilter()
   const search = useSearchParams()

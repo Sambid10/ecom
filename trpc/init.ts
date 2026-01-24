@@ -32,9 +32,14 @@ export const baseProcedure = t.procedure.use(async ({ next }) => {
 export const protectedProcedure=baseProcedure.use(async({ctx,next})=>{
   const headers=await getHeaders()
   const session=await ctx.payload.auth({headers})
-  if(!session.user){
-    throw new TRPCError({code:"UNAUTHORIZED",message:"Must be logged in."})
+    if (!session?.user?.id) {
+    // Throw UNAUTHORIZED, client will handle redirect
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be logged in",
+    });
   }
+
   return next ({ctx:{
     ...ctx,
     session:{
