@@ -14,12 +14,16 @@ export default function Footer({ isTenant = false,slug }: {
         <footer className='h-56 py-4 w-full bg-white border-t border-gray-800'>
             <div className='relative h-full max-w-7xl gap-4 mx-auto px-4 flex flex-col items-center justify-center'>
                 {isTenant && slug ? 
-                <Link href={"/"}>
+                <Link 
+                prefetch
+                href={"/"}>
                     <h1 className='font-dance capitalize font-semibold text-3xl md:text-4xl '>
                         {slug}'s K-Shopify
                     </h1>
                 </Link>
-                :   <Link href={"/"}>
+                :   <Link 
+                prefetch
+                href={"/"}>
                     <h1 className='font-dance font-semibold text-3xl md:text-4xl '>
                         K-Shopify
                     </h1>
@@ -76,7 +80,7 @@ export default function Footer({ isTenant = false,slug }: {
                 <div className="flex gap-2 items-center">
                     <h1 className="text-sm text-gray-800">Powered By:</h1>
                  
-                        {isTenant ? <Link href={"/"}>
+                        {isTenant ? <Link prefetch href={"/"}>
                             <h1 className='font-dance font-semibold text-2xl md:text-2xl '>
                                 K-Shopify
                             </h1>

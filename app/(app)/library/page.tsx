@@ -14,7 +14,7 @@ export default async function page() {
   void queryClient.prefetchQuery (trpc.orders.getMany.queryOptions({
     limit: 8,
     page:1
-  }))
+}))
 
   return (
     <>

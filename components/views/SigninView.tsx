@@ -102,6 +102,7 @@ export default function SignInView() {
 
       <div className="lg:w-[60%] w-full bg-background flex items-center justify-center relative">
         <Link
+        prefetch
           title="Go Home"
           href={"/"}
           className="absolute flex items-center justify-center hover:bg-gray-100  top-4 left-8 h-12 w-12 border border-gray-800 bg-background rounded-full ">
@@ -176,6 +177,7 @@ export default function SignInView() {
                     {loginMutation.isPending ? <Loading /> : <h1>Sign-in</h1>}
                 </Button>
                 <Link
+                prefetch
                   href={"/"}
                 >
                   <h1 className="underline text-gray-800 text-sm">Forgot Password?</h1></Link>
@@ -183,6 +185,7 @@ export default function SignInView() {
               <span className="flex w-full justify-center gap-1">
                 <h1 className="text-gray-800">Don't have an account?</h1>
                 <Link
+                prefetch
                   href={"/sign-up"}
                   className="text-blue-600 underline">
                   Sign up here !!</Link>

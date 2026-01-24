@@ -102,6 +102,7 @@ export default function SignUpView() {
       </div>
       <div className="lg:w-[60%] w-full bg-background flex items-center justify-center relative">
         <Link
+        prefetch
           title="Go Home"
           href={"/"}
           className="absolute flex items-center justify-center hover:bg-gray-100  top-4 left-8 h-12 w-12 border border-gray-800 bg-background rounded-full ">
@@ -202,6 +203,7 @@ export default function SignUpView() {
               <span className="flex w-full justify-center gap-1">
                 <h1 className="text-gray-800">Already have an account?</h1>
                 <Link
+                prefetch
                   href={"/sign-in"}
                   className="text-blue-600 underline">
                   Sign in here !!</Link>

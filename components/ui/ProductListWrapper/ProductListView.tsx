@@ -17,11 +17,13 @@ export default function ProductListView({ category, subcategory ,tenantSlug}: Pr
         
         <div className='absolute top-0 w-[50vw] flex items-center gap-2 h-8'>
           <Link
+          prefetch
             className='text-blue-600 font-medium text-base capitalize  hover:underline'
             href={`/`}
           >Home</Link>
           <h1 className='text-blue-500'>&gt;</h1>
           <Link
+          prefetch
             className='text-blue-600 font-medium text-base capitalize hover:underline'
             href={`${category}`}
           >{category}</Link>
@@ -29,6 +31,7 @@ export default function ProductListView({ category, subcategory ,tenantSlug}: Pr
             <>
               <h1 className='text-blue-500'>&gt;</h1>
               <Link
+              prefetch
                 className='text-blue-600 font-medium text-base capitalize hover:underline'
                 href={`${subcategory}`}
               >{subcategory}</Link>

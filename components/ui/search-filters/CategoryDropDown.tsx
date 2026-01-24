@@ -51,6 +51,7 @@ export default function CategoryDropDown({ category, activeCategory }: Props) {
             onMouseLeave={() => setOpen(false)}
         >
             <Link
+            prefetch
                 href={`/${category.slug}`}
                 className={`${open || activeCategory === category.slug ? "bg-black text-white" : "bg-white text-black"} h-9 w-fit px-4  rounded-full border cursor-pointer border-black  hover:text-white hover:bg-gray-800 inline-flex items-center justify-center gap-2 whitespace-nowrap  text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive`}>
                 {category.name}
@@ -81,6 +82,7 @@ export default function CategoryDropDown({ category, activeCategory }: Props) {
                         {category.subcategories.map((sub) => (
 
                             <Link
+                            prefetch
                                 key={sub.slug} href={`/${category.slug}/${sub.slug}`}>
                                 <div className="flex items-center mr-1.5">
                                     <h1 className="mr-1.5">•</h1><h1 className="underline text-sm py-1"> {sub.name}</h1>

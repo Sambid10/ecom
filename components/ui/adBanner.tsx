@@ -48,6 +48,7 @@ export default function AdBanner() {
                         <h1 className="text-[13px] tracking-wide font-medium">{divs[activeDiv].text}</h1>
                         {divs[activeDiv].link &&
                             <Link
+                            prefetch
                                 href={divs[activeDiv].link}
                             >
                                 <h1 className="text-[13px] tracking-wide underline font-semibold text-center">{divs[activeDiv].linktext}</h1>

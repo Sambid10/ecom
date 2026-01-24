@@ -27,6 +27,7 @@ export default function SearchInput({ disabled, className }: Props) {
             </div>
             {session?.user?.id && 
               <Link
+              prefetch
                 href={"/library"}
                 className='hover:bg-gray-100 bg-white rounded-full h-10 w-fit  flex items-center gap-2 border border-black px-2 md:px-4' 
             >

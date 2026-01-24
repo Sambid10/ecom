@@ -1,7 +1,7 @@
 "use client"
 import { useCart } from "@/modules/zustand/checkout/hooks/use-cart"
 import { useTRPC } from "@/trpc/client"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -41,47 +41,53 @@ function SummarySkeleton() {
 
 export default function CheckoutView({ slug }: { slug: string }) {
   const trpc = useTRPC()
-  const router=useRouter()
-  const [states,setStates]=useCheckoutStates()
-  const {data:session}=useQuery(trpc.auth.session.queryOptions())
-  const { productIds ,removeProduct,clearCart} =useCart(slug,session?.user?.id ?? "")
+  const router = useRouter()
+  const [states, setStates] = useCheckoutStates()
+  const { data: session } = useQuery(trpc.auth.session.queryOptions())
+  const { productIds, removeProduct, clearCart } = useCart(slug, session?.user?.id ?? "")
   const { data, error, isLoading } = useQuery(
     trpc.checkout.getProducts.queryOptions({ ids: productIds })
   )
-  const purchase=useMutation(trpc.checkout.purchase.mutationOptions({
-    onMutate:()=>{
-      setStates({success:false,cancel:false})
+  const queryClient = useQueryClient()
+  const purchase = useMutation(trpc.checkout.purchase.mutationOptions({
+    onMutate: () => {
+      setStates({ success: false, cancel: false })
     },
-    onSuccess:(data)=>{
-      window.location.href=data.url
+    onSuccess: (data) => {
+      window.location.href = data.url
     },
-    onError:(err)=>{
-      if(err.data?.code === "UNAUTHORIZED"){
+    onError: (err) => {
+      if (err.data?.code === "UNAUTHORIZED") {
         router.push("/sign-in")
       }
       toast.error(err.message)
     }
   }))
-  useEffect(()=>{
-  //  console.log("Treiggerd....")
-    if(states.success && session?.user?.id){
+  useEffect(() => {
+    //  console.log("Treiggerd....")
+    if (states.success && session?.user?.id) {
+
       clearCart();
-       setStates({cancel:false,success:false})
+      setStates({ cancel: false, success: false })
+
+      queryClient.invalidateQueries(trpc.orders.getMany.queryFilter())
+      router.replace("/library")
+
     }
-  },[states.success,clearCart,setStates])
+  }, [states.success, clearCart, setStates, queryClient, trpc.orders.getMany, router])
   useEffect(() => {
     if (!error) return
     if (error.data?.code === "NOT_FOUND") {
       clearCart()
       toast.warning("Invalid products found, cart cleared!!")
     }
-  }, [error,clearCart])
+  }, [error, clearCart])
 
   const price = data?.docs.map((doc) => doc.price) ?? []
   const total = price.reduce((sum, p) => sum + p, 0)
- if(data?.docs.length ===0){
-    return  <NoCart/>
- }
+  if (data?.docs.length === 0) {
+    return <NoCart />
+  }
   return (
     <div className="mt-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -128,9 +134,9 @@ export default function CheckoutView({ slug }: { slug: string }) {
                     }).format(Number(prod.price))}
                   </h1>
                 </div>
-                <button 
-                onClick={()=>removeProduct(prod.id)}
-                className="absolute cursor-pointer bottom-2 right-2 text-red-600 underline text-[14px] underline-offset-2">
+                <button
+                  onClick={() => removeProduct(prod.id)}
+                  className="absolute cursor-pointer bottom-2 right-2 text-red-600 underline text-[14px] underline-offset-2">
                   Remove
                 </button>
               </div>
@@ -152,9 +158,9 @@ export default function CheckoutView({ slug }: { slug: string }) {
               </h1>
             </div>
             <div className="w-full flex justify-center">
-              <Button 
-              onClick={()=>purchase.mutate({tenantSlug:slug,productIds:productIds})}
-              className="w-[80%] cursor-pointer h-11 text-base">
+              <Button
+                onClick={() => purchase.mutate({ tenantSlug: slug, productIds: productIds })}
+                className="w-[80%] cursor-pointer h-11 text-base">
                 <CheckSquareIcon /> Checkout
               </Button>
             </div>

@@ -60,7 +60,9 @@ return (
             onMouseLeave={() => setHoveredId(null)}
             className="relative"
         >
-            <Link href={`/tenants/${authorUsername}/product/${id}`}>
+            <Link 
+            prefetch
+            href={`/tenants/${authorUsername}/product/${id}`}>
                 <div className="border border-gray-600 rounded-md bg-background overflow-hidden h-full flex flex-col shadow-xs">
                     <div className="relative aspect-square">
                         <Image

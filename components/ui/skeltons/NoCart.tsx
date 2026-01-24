@@ -1,5 +1,3 @@
-import Image from 'next/image' // if using Next.js
-
 export default function NoCart() {
     return (
         <div className="flex flex-col items-center justify-center mt-8 text-center gap-4 overflow-x-clip">
