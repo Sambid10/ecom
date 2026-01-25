@@ -140,7 +140,7 @@ export const productRouter = createTRPCRouter({
       limit: input.limit,
     });
     
-    let purchasedProdcutIds:string[]=[]
+    let purchasedproductIds:string[]=[]
     if (session.user) {
       const productIds=data.docs.map((prod)=>prod.id)
       const purchasedorder = await ctx.payload.find({
@@ -160,7 +160,7 @@ export const productRouter = createTRPCRouter({
           ]
         }
       })
-      purchasedProdcutIds=purchasedorder.docs.map((order)=>{
+      purchasedproductIds=purchasedorder.docs.map((order)=>{
         let product=order.product
         return typeof product === "string" ? product : product.id
       })
@@ -171,7 +171,7 @@ export const productRouter = createTRPCRouter({
         ...doc,
         image: doc.image as Media,
         tenant: doc.tenant as Tenant & { image: Media | null },
-        isPurchased:purchasedProdcutIds.includes(doc.id)
+        isPurchased:purchasedproductIds.includes(doc.id)
       }))
     };
   })

@@ -9,7 +9,7 @@ export const checkOutRouter = createTRPCRouter({
         productIds:z.array(z.string()).min(1),
         tenantSlug:z.string().min(1),
     })).mutation(async({ctx,input})=>{
-        const prodcuts=await ctx.payload.find({
+        const products=await ctx.payload.find({
             collection:"products",
             depth:2,
             where:{
@@ -26,7 +26,7 @@ export const checkOutRouter = createTRPCRouter({
                 ]
             }
         })
-        if(prodcuts.totalDocs !== input.productIds.length){
+        if(products.totalDocs !== input.productIds.length){
             throw new TRPCError({code:"NOT_FOUND",message:"Produts not found"})
         }
         const tenantsData=await ctx.payload.find({
@@ -44,7 +44,7 @@ export const checkOutRouter = createTRPCRouter({
             throw new TRPCError({code:"NOT_FOUND",message:"Tenant not found"})
         }
         const lineItems:Stripe.Checkout.SessionCreateParams.LineItem[]= 
-        prodcuts.docs.map((prod)=>({
+        products.docs.map((prod)=>({
             quantity:1,
             price_data:{
                 unit_amount:prod.price * 100,

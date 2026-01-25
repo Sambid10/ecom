@@ -14,7 +14,7 @@ export default function SearchInput({ disabled, className }: Props) {
     const trpc=useTRPC()
     const {data:session}=useQuery(trpc.auth.session.queryOptions())
     return (
-        <div className="w-full bg-background pb-2 flex gap-2">
+        <div className="w-full bg-background pb-2 flex items-center gap-2">
             <div className={cn("relative w-full lg:flex lg:mx-auto", className)}>
                 <Input
                     placeholder="Search Products"
