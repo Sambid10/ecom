@@ -57,7 +57,7 @@ export default function ReviewForm({ initialData, productId }: Props) {
                         </div>
                         <div className="flex flex-col">
 
-                            <StarPicker value={initialData.rating} />
+                            <StarPicker disabled={true} value={initialData.rating} />
                             <h1 className="capitalize font-medium">{initialData.docs.map((user) => user.user.username)}</h1>
                         </div>
                     </div>

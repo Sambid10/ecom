@@ -89,6 +89,7 @@ export default function Forms({ initialData, productId ,closeDialog}: {
                                 </div>
 
                                 <StarPicker
+                                   
                                     disabled={reviewmutaion.isPending || updatemutation.isPending }
                                     value={field.value}
                                     onChange={field.onChange}
