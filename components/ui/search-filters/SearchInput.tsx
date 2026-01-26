@@ -32,7 +32,7 @@ export default function SearchInput({ disabled, className }: Props) {
                 className='hover:bg-gray-100 bg-white rounded-full h-10 w-fit  flex items-center gap-2 border border-black px-2 md:px-4' 
             >
                 <Package className='h-3.75 w-3.75' />
-                <h1 className='text-sm'> Orders</h1>
+                <h1 className='text-sm'>Library</h1>
             </Link>
             }
           

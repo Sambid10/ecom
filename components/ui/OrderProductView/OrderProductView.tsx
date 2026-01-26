@@ -39,7 +39,7 @@ function ProductPageSuspense({ productId }: { productId: string }) {
             </div>
             <ContainerWrapper className='max-w-7xl py-4'>
                 <div className='min-h-screen grid grid-cols-12 gap-4'>
-                    <div className='col-span-12  bg-white border border-gray-800 p-2 rounded-md h-fit'>
+                    <div className='col-span-12  bg-white border border-gray-800  rounded-md h-fit'>
                         <ReviewSidebar productId={productId}/>
                     </div>
                 </div>
