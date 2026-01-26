@@ -14,7 +14,7 @@ const FormSchema = z.object({
     ratings: z.number().max(5).min(1, { error: "Rating is required" }),
     description: z.string().min(1, { error: "Description is required" }).max(255, { error: "Max 255 characters." }),
 })
-export default function Forms({ initialData, productId ,closeDialog}: {
+export default function zForms({ initialData, productId ,closeDialog}: {
     initialData: ReviewGetOne
     productId: string
     closeDialog?:()=>void
@@ -114,7 +114,7 @@ export default function Forms({ initialData, productId ,closeDialog}: {
 
                                 <Textarea
                                     disabled={reviewmutaion.isPending || updatemutation.isPending }
-                                    className="shadow-sm border border-gray-800 min-h-26"
+                                    className="shadow-sm border bg-white border-gray-800 min-h-26"
                                     placeholder="Want to leave a review?"
                                     {...field}
                                 />

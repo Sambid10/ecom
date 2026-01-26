@@ -1,8 +1,28 @@
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import * as z from "zod";
 import { TRPCError } from "@trpc/server";
 import { User } from "@/payload-types";
 export const reviewProcedure = createTRPCRouter({
+    getMany: baseProcedure.input(z.object({
+        productId: z.string()
+    }
+    )).query(({ ctx, input }) => {
+        const { productId } = input
+        if(!productId){
+            throw new TRPCError({code:"NOT_FOUND",message:"No product found"})
+        }
+        const allreview=ctx.payload.find({
+            collection:"reviews",
+            depth:0,
+            pagination:false,
+            where:{
+                product:{
+                    equals:productId
+                }
+            }
+        })
+        return allreview
+    }),
     getOne: protectedProcedure.input(
         z.object({
             productId: z.string(),

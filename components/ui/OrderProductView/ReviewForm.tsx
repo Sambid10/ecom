@@ -20,12 +20,26 @@ export default function ReviewForm({ initialData, productId }: Props) {
     if (tenant && tenant.image && typeof tenant.image !== "string") {
         tenantImageUrl = tenant.image.url ?? null
     }
+    const { data: reviewData } = useQuery(trpc.reviews.getMany.queryOptions({
+        productId: productId
+    }))
+    console.log(reviewData, "REVIREW ME PLS")
     const [edit, setEdit] = useState(false)
     const handleOpen = () => {
         setEdit((prev) => !prev)
     }
+    const allratings = reviewData?.docs.map((rev) => rev.rating) ?? []
+    const total = allratings?.reduce((sum, num) => sum + num, 0)
+    const average=allratings.length > 0 ? total/ allratings.length : 0
+    const roundedAverage = Math.round(average * 2) / 2;
+
     return (
         <div>
+            <div className="p-8 font-semibold text-6xl flex flex-col gap-2">
+                <h1>{roundedAverage} / 5.0</h1>
+                <StarPicker disabled={true}  value={roundedAverage}/>
+            </div>
+
             {!initialData &&
                 <div className="p-4">
                     <h1 className="font-medium text-lg mb-2 text-gray-800">Liked it? Please give us a review.</h1>

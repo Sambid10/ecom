@@ -13,6 +13,9 @@ export default async function page({ params }: Props) {
     void queryClient.prefetchQuery(trpc.reviews.getOne.queryOptions({
         productId:productId
     }))
+    void queryClient.prefetchQuery(trpc.reviews.getMany.queryOptions({
+        productId:productId
+    }))
     return (
             <HydrationBoundary state={dehydrate(queryClient)}>
                 <OrderProductViewSuspense productId={productId}/>
