@@ -16,7 +16,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { cn, generateTenantUrl } from "@/lib/utils"
-import { ChevronRight} from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import Link from "next/link"
 interface Props {
   category?: string
@@ -51,7 +51,6 @@ export default function ProductList({ category, tenantSlug, className, isTenant 
   }
 
   const totalPages = Math.ceil(data.totalDocs / Number(totalLimit))
-
   return (
     <>
       {isTenant &&
@@ -59,9 +58,9 @@ export default function ProductList({ category, tenantSlug, className, isTenant 
           <h1 className="font-medium text-2xl capitalize">{tenantSlug}'s Product's</h1>
           {Number(totalPages) > 1 &&
             <div className="h-full flex items-center justify-center">
-              <Link 
-              href={`${generateTenantUrl(tenantSlug!)}/all`}
-              className='border  bg-white border-black px-4 py-2 flex items-center gap-1 text-black rounded-md hover:bg-gray-100'>
+              <Link
+                href={`${generateTenantUrl(tenantSlug!)}/all`}
+                className='border  bg-white border-black px-4 py-2 flex items-center gap-1 text-black rounded-md hover:bg-gray-100'>
                 <h1 className="text-base uppercase font-normal">View All Products</h1>  <ChevronRight className="size-4" />
               </Link>
             </div>
@@ -75,23 +74,29 @@ export default function ProductList({ category, tenantSlug, className, isTenant 
           className
         )}
       >
-        {data.docs.map((product) => (
-          <ProductCard
-            isPurchased={product.isPurchased}
-            key={product.id}
-            id={product.id}
-            description={product.description!}
-            name={product.name}
-            pic={product.image?.url}
-            authorUsername={product.tenant.name}
-            authorImageUrl={product.tenant.image?.url}
-            reviewRating={3}
-            reviewCount={5}
-            price={product.price}
-            hoveredId={hoveredId}
-            setHoveredId={setHoveredId}
-          />
-        ))}
+        {data.docs.map((product) => {
+          // const ratings = product.review.map((rev)=>rev.rating)
+          // console.log(ratings)
+
+          return (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              description={product.description!}
+              name={product.name}
+              pic={product.image?.url}
+              authorUsername={product.tenant.name}
+              authorImageUrl={product.tenant.image?.url}
+              isPurchased={product.isPurchased}
+              reviewRating={product.finalrating}
+              reviewCount={5}
+              price={product.price}
+              hoveredId={hoveredId}
+              setHoveredId={setHoveredId}
+            />
+          );
+        })}
+
 
       </div>
 

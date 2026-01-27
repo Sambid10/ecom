@@ -40,7 +40,7 @@ export default function NewProductSection() {
                                     pic={product.image?.url}
                                     authorUsername={product.tenant.name}
                                     authorImageUrl={product.tenant.image?.url}
-                                    reviewRating={3}
+                                    reviewRating={product.finalrating}
                                     reviewCount={5}
                                     price={product.price}
                                     hoveredId={hoveredId}

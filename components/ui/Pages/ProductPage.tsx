@@ -4,7 +4,7 @@ import { Fragment, Suspense, useState, useMemo } from "react"
 import Image from "next/image"
 import { ErrorBoundary } from "react-error-boundary"
 import { useTRPC } from "@/trpc/client"
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import Link from "next/link"
 import ProductPageSkeleton from "../skeltons/ProductPageSkeleton"
 import dynamic from "next/dynamic"
@@ -13,6 +13,7 @@ import { Progress } from "../progress"
 import Loading from "../Loading/Loading"
 import { Button } from "../button"
 import { generateTenantUrl } from "@/lib/utils"
+import StarPicker from "../OrderProductView/StarPicker"
 
 // CartButton dynamically imported with no SSR
 const CartButton = dynamic(() => import("../CartButton/CartButton"), {
@@ -36,6 +37,27 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
   // Fetch product and tenant data using suspense queries
   const { data } = useSuspenseQuery(trpc.products.getOne.queryOptions({ id: productId }))
   const { data: tenantdata } = useSuspenseQuery(trpc.tenant.getOne.queryOptions({ slug: tenantSlug }))
+
+  //ratings
+  const { data: reviewratingsdata,isLoading:reviewratingsdataloading } = useSuspenseQuery(trpc.reviews.getRatings.queryOptions({ productId: productId }))
+  const allratings = reviewratingsdata.docs.map((doc) => doc.rating) || []
+  const totalratings = allratings.reduce((acc, data) => data + acc, 0)
+  const totalaverageRating=allratings.length > 0 ? totalratings / allratings.length  : 0
+  const safeRound=(num:number)=>Math.round((num+Number.EPSILON)*2)/2
+  const saferoundavg= safeRound(totalaverageRating)
+
+  //star count
+  const starCounts=[5,4,3,2,1].map((star)=>reviewratingsdata.docs.filter((rev)=>rev.rating === star).length)
+   const totalReviews = reviewratingsdata.docs.length ?? 0 
+  const starPercentages = starCounts.map(count =>
+        totalReviews > 0 ? (count / totalReviews) * 100 : 0
+    )
+
+  //many reviews data
+  // const {data:reviewdata}=useInfiniteQuery(trpc.reviews.getMany.infiniteQueryOptions({
+  //   productId:productId,
+
+  // }))
 
   // Session query
   const { data: session } = useQuery(trpc.auth.session.queryOptions())
@@ -66,9 +88,8 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
           <div
             onMouseEnter={!isTouch ? () => handleSelect(mainImageDefault) : undefined}
             onClick={isTouch ? () => handleSelect(mainImageDefault) : undefined}
-            className={`h-30 w-30 relative rounded-sm cursor-pointer border ${
-              mainImage === mainImageDefault ? "border-black border-2 brightness-100" : "border-white brightness-75"
-            }`}
+            className={`h-30 w-30 relative rounded-sm cursor-pointer border ${mainImage === mainImageDefault ? "border-black border-2 brightness-100" : "border-white brightness-75"
+              }`}
           >
             <Image fill alt="thumb" className="object-cover rounded-sm" src={mainImageDefault} />
           </div>
@@ -79,9 +100,8 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
               key={pic.id}
               onMouseEnter={!isTouch ? () => handleSelect(pic.url!) : undefined}
               onClick={isTouch ? () => handleSelect(pic.url!) : undefined}
-              className={`h-30 w-30 relative rounded-sm cursor-pointer border ${
-                mainImage === pic.url ? "border-black border-2 brightness-100" : "border-white brightness-75"
-              }`}
+              className={`h-30 w-30 relative rounded-sm cursor-pointer border ${mainImage === pic.url ? "border-black border-2 brightness-100" : "border-white brightness-75"
+                }`}
             >
               <Image fill alt="thumb" className="object-cover rounded-sm" src={pic.url!} />
             </div>
@@ -121,7 +141,7 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
                   </Link>
                 </div>
 
-                <div className="col-span-6 flex items-center ml-2">Ratings</div>
+                <div className="col-span-6 flex items-center ml-2"><h1 className="mr-2">Rating: </h1><StarPicker disabled={true} hoverable={false} value={safeRound(totalaverageRating)}/></div>
               </div>
 
               <div className="py-4 px-2">
@@ -137,9 +157,9 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
               <div className="py-4 px-4 flex flex-col gap-2">
                 {/* PURCHASED / CART BUTTON */}
                 {data.ispurchasedProduct ? (
-                  <Link 
-                  href={`/library`}
-                  className="text-white flex items-center justify-center text-lg gap-2 cursor-pointer xs:w-[60%] w-[70%] mx-auto md:w-full h-11 rounded-full text-[15px] bg-green-600 hover:bg-green-500">
+                  <Link
+                    href={`/library`}
+                    className="text-white flex items-center justify-center text-lg gap-2 cursor-pointer xs:w-[60%] w-[70%] mx-auto md:w-full h-11 rounded-full text-[15px] bg-green-600 hover:bg-green-500">
                     <Check className="h-4 w-4" />
                     Order Placed.
                   </Link>
@@ -165,19 +185,23 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
                 <h1>Ratings</h1>
                 <div className="flex items-center gap-2">
                   <Star className="fill-yellow-500 h-4 w-4" />
-                  <h1 className="text-sm">(5) /5 ratings</h1>
+                  
+                  <h1 className="text-sm font-medium">
+                    {reviewratingsdataloading ? <Loading/> : saferoundavg }  {" "}/ 5 ratings</h1>
                 </div>
               </div>
 
               <div className="grid grid-cols-[auto_1fr_auto] gap-3 mt-2">
-                {[5, 4, 3, 2, 1].map((stars) => (
+                {[5, 4, 3, 2, 1].map((stars,index) => (
                   <Fragment key={stars}>
                     <div className="text-sm text-gray-800 flex gap-1">
                       <span>{stars}</span>
                       <span>{stars === 1 ? "star" : "stars"}</span>
                     </div>
-                    <Progress value={29} className="h-6.25 bg-gray-200/50 border border-black" />
-                    <span className="text-sm text-gray-800">0%</span>
+                    <Progress   value={starPercentages[index]} className="h-6.25 bg-gray-200/50 border border-black" />
+                    <div className="text-sm  font-medium text-gray-700 text-left">
+                                {starCounts[index]} ({Math.round(starPercentages[index])}%)
+                            </div>
                   </Fragment>
                 ))}
               </div>

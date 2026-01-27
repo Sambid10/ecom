@@ -14,7 +14,7 @@ const FormSchema = z.object({
     ratings: z.number().max(5).min(1, { error: "Rating is required" }),
     description: z.string().min(1, { error: "Description is required" }).max(255, { error: "Max 255 characters." }),
 })
-export default function zForms({ initialData, productId ,closeDialog}: {
+export default function Forms({ initialData, productId ,closeDialog}: {
     initialData: ReviewGetOne
     productId: string
     closeDialog?:()=>void
@@ -30,12 +30,22 @@ export default function zForms({ initialData, productId ,closeDialog}: {
     })
     const reviewmutaion = useMutation(trpc.reviews.createReview.mutationOptions({
         onSuccess: () => {
-            toast.success("Review submitted.")
+             toast.success("Review added.", {
+                    style: {
+                        backgroundColor: "#16A34A", // green-600
+                        color: "white",
+                    }
+                });
             queryClient.invalidateQueries(trpc.reviews.getOne.queryFilter())
         },
         onError: (err) => {
-            console.error(err)
-            toast.error("Failed to submit review.")
+            
+           toast.error("Failed to submit review.", {
+                    style: {
+                        backgroundColor: "#DC2626", // red-600
+                        color: "white",
+                    },
+                });
         }
     }))
     const updatemutation = useMutation(
@@ -54,7 +64,6 @@ export default function zForms({ initialData, productId ,closeDialog}: {
 
             },
             onError: (err) => {
-                console.error(err);
                 toast.error("Failed to update review.", {
                     style: {
                         backgroundColor: "#DC2626", // red-600

@@ -1,7 +1,7 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
 import * as z from "zod";
-import { Category, Media, Order, Tenant } from "@/payload-types";
+import { Category, Media, Order, Review, Tenant } from "@/payload-types";
 import { sortValues } from "@/hooks/searchParams";
 import { headers as getHeader } from "next/headers";
 export const productRouter = createTRPCRouter({
@@ -139,10 +139,29 @@ export const productRouter = createTRPCRouter({
       page: input.page,
       limit: input.limit,
     });
-    
-    let purchasedproductIds:string[]=[]
+    const productIds = data.docs.map(p => p.id)
+    const allReviews = await ctx.payload.find({
+      collection: "reviews",
+      depth: 1,
+      limit: 0,
+      where: {
+        product: {
+          in: productIds
+        }
+      }
+    })
+    const reviewMap: Record<string, Review[]> = {}
+
+    allReviews.docs.forEach((r) => {
+      const pid = typeof r.product === "string" ? r.product : r.product.id
+      if (!reviewMap[pid]) reviewMap[pid] = []
+      reviewMap[pid].push(r as unknown as Review)
+    })
+
+
+    let purchasedproductIds: string[] = []
     if (session.user) {
-      const productIds=data.docs.map((prod)=>prod.id)
+      const productIds = data.docs.map((prod) => prod.id)
       const purchasedorder = await ctx.payload.find({
         collection: "orders",
         depth: 1,
@@ -150,7 +169,7 @@ export const productRouter = createTRPCRouter({
           and: [
             {
               product: {
-                in:productIds
+                in: productIds
               }
             }, {
               user: {
@@ -160,19 +179,29 @@ export const productRouter = createTRPCRouter({
           ]
         }
       })
-      purchasedproductIds=purchasedorder.docs.map((order)=>{
-        let product=order.product
+      purchasedproductIds = purchasedorder.docs.map((order) => {
+        let product = order.product
         return typeof product === "string" ? product : product.id
       })
     }
+   return {
+  ...data,
+  docs: data.docs.map(doc => {
+    const reviews = reviewMap[doc.id] ?? []
+    const avgRating =
+      reviews.length > 0
+        ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+        : 0 
+    const finalrating=Math.round((avgRating + Number.EPSILON) * 2) / 2
     return {
-      ...data,
-      docs: data.docs.map((doc) => ({
-        ...doc,
-        image: doc.image as Media,
-        tenant: doc.tenant as Tenant & { image: Media | null },
-        isPurchased:purchasedproductIds.includes(doc.id)
-      }))
-    };
+      ...doc,
+      reviews,
+      finalrating,
+      isPurchased: purchasedproductIds.includes(doc.id),
+      image: doc.image as Media,
+      tenant: doc.tenant as Tenant & { image: Media | null }
+    }
+  })
+}
   })
 });

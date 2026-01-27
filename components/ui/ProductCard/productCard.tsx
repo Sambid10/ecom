@@ -96,7 +96,7 @@ return (
                             <div className="flex items-center gap-1 justify-between">
                                 <div className="flex items-center gap-1">
                                     <StarIcon className="size-4 fill-yellow-500" />
-                                    <p className="text-sm">{reviewRating} ({reviewCount})</p>
+                                    <p className="text-sm font-medium">{reviewRating} / {reviewCount}</p>
                                 </div>
 
                                 {/* Show order/cart status only if user is logged in */}

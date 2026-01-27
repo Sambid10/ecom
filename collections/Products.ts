@@ -49,6 +49,11 @@ export const Products: CollectionConfig = {
             type: "relationship",
             relationTo: "tags",
             hasMany: true
+        },{
+            name:"review",
+            type:"relationship",
+            relationTo:"reviews",
+            hasMany:true,
         }
     ]
 }

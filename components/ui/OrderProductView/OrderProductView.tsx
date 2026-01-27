@@ -8,9 +8,10 @@ import ContainerWrapper from '../containerWrapper/ContainerWrapper'
 import Link from 'next/link'
 import ReviewSidebar from './ReviewSidebar'
 import { ChevronLeft } from 'lucide-react'
+import ProductReviewSkeleton from '../skeltons/ProductReviewSkeleton'
 export default function OrderProductViewSuspense({ productId }: { productId: string }) {
     return (
-        <Suspense fallback={<ProductPageSkeleton />}>
+        <Suspense fallback={<ProductReviewSkeleton />}>
             <ErrorBoundary fallback={<h1>Error fetching data</h1>}>
                 <ProductPageSuspense productId={productId} />
             </ErrorBoundary>
@@ -24,7 +25,7 @@ function ProductPageSuspense({ productId }: { productId: string }) {
     return (
         <>
             <div className="border-y border-black bg-white">
-                <ContainerWrapper className="max-w-7xl py-4 relative">
+                <ContainerWrapper className="max-w-7xl h-23 flex items-center relative">
                     <div className="flex md:flex-row flex-col items-start  md:items-center gap-2 md:gap-1 justify-between w-full">
                         <h1 className="text-xl md:text-xl font-medium w-full md:w-[80%] line-clamp-2 md:line-clamp-1">· {data.name}</h1>
                         <Link

@@ -84,7 +84,7 @@ export default function SmallProductCard({
                         {reviewCount > 0 &&
                             <div className="flex items-center gap-1">
                                 <StarIcon className="size-4 fill-yellow-500" />
-                                <p className="text-sm">{reviewRating} ({reviewCount})</p>
+                                <p className="text-sm font-medium">{reviewRating} / {reviewCount}</p>
                             </div>
                         }
                     </div>

@@ -27,8 +27,9 @@ export default function StarPicker({
     <div className={cn("flex items-center", disabled && "cursor-not-allowed", className)}>
       {[1, 2, 3, 4, 5].map((star) => {
         // Determine full or half star
-        const isFull = displayValue >= star
-        const isHalf = !isFull && displayValue >= star - 0.5
+ const isFull = displayValue >= star
+const isHalf = !isFull && displayValue >= star - 0.5 && displayValue < star
+
 
         return (
           <button

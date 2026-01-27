@@ -13,8 +13,12 @@ export default async function page({ params }: Props) {
     void queryClient.prefetchQuery(trpc.reviews.getOne.queryOptions({
         productId:productId
     }))
-    void queryClient.prefetchQuery(trpc.reviews.getMany.queryOptions({
-        productId:productId
+     void queryClient.prefetchQuery(trpc.reviews.getRatings.queryOptions({
+        productId:productId,
+    }))
+    void queryClient.prefetchInfiniteQuery(trpc.reviews.getMany.infiniteQueryOptions({
+        productId:productId,
+        limit:5,
     }))
     return (
             <HydrationBoundary state={dehydrate(queryClient)}>

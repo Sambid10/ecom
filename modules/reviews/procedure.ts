@@ -1,27 +1,75 @@
 import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import * as z from "zod";
 import { TRPCError } from "@trpc/server";
-import { User } from "@/payload-types";
+import { Review, Tenant, User } from "@/payload-types";
 export const reviewProcedure = createTRPCRouter({
-    getMany: baseProcedure.input(z.object({
+    getRatings: baseProcedure.input(z.object({
         productId: z.string()
     }
-    )).query(({ ctx, input }) => {
+    )).query(async ({ ctx, input }) => {
         const { productId } = input
-        if(!productId){
-            throw new TRPCError({code:"NOT_FOUND",message:"No product found"})
+        if (!productId) {
+            throw new TRPCError({ code: "NOT_FOUND", message: "No product found" })
         }
-        const allreview=ctx.payload.find({
-            collection:"reviews",
-            depth:0,
-            pagination:false,
-            where:{
-                product:{
-                    equals:productId
+        const allreview = await ctx.payload.find({
+            collection: "reviews",
+            depth: 0,
+            pagination: false,
+            where: {
+                product: {
+                    equals: productId
                 }
             }
         })
         return allreview
+    }),
+    getMany: baseProcedure.input(z.object({
+        cursor: z.number().default(1),
+        limit: z.number().default(5),
+        productId: z.string(),
+        userId: z.string().nullable().optional()
+    }
+    )).query(async ({ ctx, input }) => {
+        const { productId, cursor, limit } = input
+        if (!productId) {
+            throw new TRPCError({ code: "NOT_FOUND", message: "No product found" })
+        }
+        const allreview = await ctx.payload.find({
+            collection: "reviews",
+            depth: 3,
+            pagination: true,
+            page: cursor,
+            limit: limit,
+            where: {
+                product: {
+                    equals: productId
+                }
+            }
+        })
+        const currentUserId = input.userId
+
+        const filteredreviews = {
+            ...allreview,
+            docs: currentUserId
+                ? allreview.docs.filter(r =>
+                    typeof r.user !== "string" && r.user.id !== currentUserId
+                )
+                : allreview.docs
+        };
+
+
+        return {
+            ...filteredreviews,
+            docs: filteredreviews.docs.map((rev) => {
+                const user = rev.user as User;
+                const tenant = user.tenants?.map((tenant) => tenant.tenant) as Tenant[]
+                return {
+                    ...rev,
+                    user,
+                    tenant
+                };
+            })
+        }
     }),
     getOne: protectedProcedure.input(
         z.object({

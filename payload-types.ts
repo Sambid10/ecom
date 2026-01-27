@@ -241,6 +241,7 @@ export interface Product {
   'additional images': (string | Media)[];
   refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refund') | null;
   tags?: (string | Tag)[] | null;
+  review?: (string | Review)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -257,19 +258,6 @@ export interface Tag {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "orders".
- */
-export interface Order {
-  id: string;
-  name: string;
-  user: string | User;
-  product: string | Product;
-  stripeCheckoutSessionid: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reviews".
  */
 export interface Review {
@@ -278,6 +266,19 @@ export interface Review {
   rating: number;
   product: string | Product;
   user: string | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: string;
+  name: string;
+  user: string | User;
+  product: string | Product;
+  stripeCheckoutSessionid: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -453,6 +454,7 @@ export interface ProductsSelect<T extends boolean = true> {
   'additional images'?: T;
   refundPolicy?: T;
   tags?: T;
+  review?: T;
   updatedAt?: T;
   createdAt?: T;
 }

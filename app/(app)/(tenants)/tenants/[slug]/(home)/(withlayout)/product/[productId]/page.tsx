@@ -5,21 +5,28 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 interface Props {
     params: Promise<{
         productId: string,
-        slug:string
+        slug: string
     }>
 }
 export default async function page({ params }: Props) {
-    const { productId ,slug} = await params
+    const { productId, slug } = await params
     const queryClient = getQueryClient()
     void queryClient.prefetchQuery(trpc.products.getOne.queryOptions({
         id: productId
     }))
     void queryClient.prefetchQuery(trpc.tenant.getOne.queryOptions({
-        slug:slug
+        slug: slug
+    }))
+    void queryClient.prefetchQuery(trpc.reviews.getRatings.queryOptions({
+        productId: productId
+    }))
+    void queryClient.prefetchInfiniteQuery(trpc.reviews.getMany.infiniteQueryOptions({
+        limit: 5,
+        productId: productId
     }))
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <ProductPage productId={productId} tenantSlug={slug}/>
+            <ProductPage productId={productId} tenantSlug={slug} />
         </HydrationBoundary>
     )
 }
