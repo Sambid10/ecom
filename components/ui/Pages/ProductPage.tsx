@@ -12,7 +12,6 @@ import { Check, Star } from "lucide-react"
 import { Progress } from "../progress"
 import Loading from "../Loading/Loading"
 import { Button } from "../button"
-import { generateTenantUrl } from "@/lib/utils"
 import StarPicker from "../OrderProductView/StarPicker"
 
 // CartButton dynamically imported with no SSR
@@ -39,26 +38,28 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
   const { data: tenantdata } = useSuspenseQuery(trpc.tenant.getOne.queryOptions({ slug: tenantSlug }))
 
   //ratings
-  const { data: reviewratingsdata,isLoading:reviewratingsdataloading } = useSuspenseQuery(trpc.reviews.getRatings.queryOptions({ productId: productId }))
+  const { data: reviewratingsdata, isLoading: reviewratingsdataloading } = useSuspenseQuery(trpc.reviews.getRatings.queryOptions({ productId: productId }))
   const allratings = reviewratingsdata.docs.map((doc) => doc.rating) || []
   const totalratings = allratings.reduce((acc, data) => data + acc, 0)
-  const totalaverageRating=allratings.length > 0 ? totalratings / allratings.length  : 0
-  const safeRound=(num:number)=>Math.round((num+Number.EPSILON)*2)/2
-  const saferoundavg= safeRound(totalaverageRating)
+  const totalaverageRating = allratings.length > 0 ? totalratings / allratings.length : 0
+  const safeRound = (num: number) => Math.round((num + Number.EPSILON) * 2) / 2
+  const saferoundavg = safeRound(totalaverageRating)
 
   //star count
-  const starCounts=[5,4,3,2,1].map((star)=>reviewratingsdata.docs.filter((rev)=>rev.rating === star).length)
-   const totalReviews = reviewratingsdata.docs.length ?? 0 
+  const starCounts = [5, 4, 3, 2, 1].map((star) => reviewratingsdata.docs.filter((rev) => rev.rating === star).length)
+  const totalReviews = reviewratingsdata.docs.length ?? 0
   const starPercentages = starCounts.map(count =>
-        totalReviews > 0 ? (count / totalReviews) * 100 : 0
-    )
+    totalReviews > 0 ? (count / totalReviews) * 100 : 0
+  )
 
   //many reviews data
-  // const {data:reviewdata}=useInfiniteQuery(trpc.reviews.getMany.infiniteQueryOptions({
-  //   productId:productId,
-
-  // }))
-
+  const { data: reviewdata, hasNextPage, isLoading, fetchNextPage, isFetching } = useInfiniteQuery(trpc.reviews.getMany.infiniteQueryOptions({
+    productId: productId,
+  },
+    {
+      getNextPageParam: (lpage) => lpage.hasNextPage ? lpage.nextPage : undefined
+    }))
+  const flattedreviewdata = reviewdata?.pages.flatMap((doc) => doc.docs)
   // Session query
   const { data: session } = useQuery(trpc.auth.session.queryOptions())
 
@@ -141,7 +142,7 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
                   </Link>
                 </div>
 
-                <div className="col-span-6 flex items-center ml-2"><h1 className="mr-2">Rating: </h1><StarPicker disabled={true} hoverable={false} value={safeRound(totalaverageRating)}/></div>
+                <div className="col-span-6 flex items-center ml-2"><h1 className="mr-2">Rating: </h1><StarPicker disabled={true} hoverable={false} value={safeRound(totalaverageRating)} /></div>
               </div>
 
               <div className="py-4 px-2">
@@ -185,29 +186,82 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
                 <h1>Ratings</h1>
                 <div className="flex items-center gap-2">
                   <Star className="fill-yellow-500 h-4 w-4" />
-                  
+
                   <h1 className="text-sm font-medium">
-                    {reviewratingsdataloading ? <Loading/> : saferoundavg }  {" "}/ 5 ratings</h1>
+                    {reviewratingsdataloading ? <Loading /> : saferoundavg}  {" "}/ 5 ratings</h1>
                 </div>
               </div>
 
               <div className="grid grid-cols-[auto_1fr_auto] gap-3 mt-2">
-                {[5, 4, 3, 2, 1].map((stars,index) => (
+                {[5, 4, 3, 2, 1].map((stars, index) => (
                   <Fragment key={stars}>
                     <div className="text-sm text-gray-800 flex gap-1">
                       <span>{stars}</span>
                       <span>{stars === 1 ? "star" : "stars"}</span>
                     </div>
-                    <Progress   value={starPercentages[index]} className="h-6.25 bg-gray-200/50 border border-black" />
+                    <Progress value={starPercentages[index]} className="h-6.25 bg-gray-200/50 border border-black" />
                     <div className="text-sm  font-medium text-gray-700 text-left">
-                                {starCounts[index]} ({Math.round(starPercentages[index])}%)
-                            </div>
+                      {starCounts[index]} ({Math.round(starPercentages[index])}%)
+                    </div>
                   </Fragment>
                 ))}
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="w-full lg:max-w-300 p-6 h-fit mt-6 mx-auto relative bg-white rounded-md border border-gray-800">
+     
+          <h1 className="font-medium mb-8">
+                    All Reviews ({totalReviews})
+                </h1>
+        {
+          isLoading ?
+            <Loading divclassName="flex justify-start" />
+            : (
+              flattedreviewdata?.map((rev) => {
+                const imageUrl =
+                  rev.tenant && rev.tenant[0]?.image
+                    ? typeof rev.tenant[0].image === "string"
+                      ? rev.tenant[0].image
+                      : rev.tenant[0].image.url ?? "/pictures/avatar.png"
+                    : "/pictures/avatar.png";
+                return (
+
+                  <div key={rev.id} className="mb-5">
+                    <div className="flex gap-3 w-full">
+                      <div className="relative h-12 w-12">
+                        <Image
+                          src={imageUrl}
+                          fill
+                          className="rounded-full object-cover border border-stone-600"
+                          alt="profile pic"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <StarPicker disabled value={rev.rating} />
+                        <h1 className="capitalize font-medium">{rev.user.username}</h1>
+                        <h1 className="mt-1 text-gray-800 text-[15px]">{rev.description}</h1>
+                      </div>
+                    </div>
+
+                  </div>
+
+                )
+              })
+            )
+        }
+        {hasNextPage && (
+          <div className="flex justify-center mt-6">
+            <Button className="w-40 cursor-pointer h-10 rounded-full text-base" onClick={() => fetchNextPage()}>
+              {isFetching ? <Loading /> : <p>Load more</p>}
+            </Button>
+          </div>
+        )}
+
+        {!hasNextPage && !isFetching && (
+          <p className="text-center italic text-xs mt-5 text-gray-600">No more reviews.</p>
+        )}
       </div>
     </div>
   )
