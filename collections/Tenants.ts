@@ -40,14 +40,14 @@ export const Tenants: CollectionConfig = {
                 update:({req})=>isSuperAdmin(req.user)
             },
             admin:{
-                readOnly:true,
+            
                 description:"Stripe account ID associated with ur shop."
             }
         },{
             name:"stripeDetailsSumbitted",
             type:"checkbox",
             admin:{
-                readOnly:true,
+               
                 description:"You cannot create products until you submut your stripe details"
             }
         },{
