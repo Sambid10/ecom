@@ -11,12 +11,15 @@ export const productRouter = createTRPCRouter({
     })
   ).query(async ({ ctx, input }) => {
     const { id } = input
-    const headers = await getHeader()
+  const headers = await getHeader()
     const session = await ctx.payload.auth({ headers })
     const product = await ctx.payload.findByID({
       collection: "products",
       depth: 1,
-      id: id
+      id: id,
+      select: {
+        content: false
+      }
     })
     let ispurchasedProduct = false
     if (session.user) {
@@ -138,6 +141,9 @@ export const productRouter = createTRPCRouter({
       sort,
       page: input.page,
       limit: input.limit,
+      select: {
+        content: false
+      }
     });
     const productIds = data.docs.map(p => p.id)
     const allReviews = await ctx.payload.find({
@@ -184,24 +190,24 @@ export const productRouter = createTRPCRouter({
         return typeof product === "string" ? product : product.id
       })
     }
-   return {
-  ...data,
-  docs: data.docs.map(doc => {
-    const reviews = reviewMap[doc.id] ?? []
-    const avgRating =
-      reviews.length > 0
-        ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
-        : 0 
-    const finalrating=Math.round((avgRating + Number.EPSILON) * 2) / 2
     return {
-      ...doc,
-      reviews,
-      finalrating,
-      isPurchased: purchasedproductIds.includes(doc.id),
-      image: doc.image as Media,
-      tenant: doc.tenant as Tenant & { image: Media | null }
+      ...data,
+      docs: data.docs.map(doc => {
+        const reviews = reviewMap[doc.id] ?? []
+        const avgRating =
+          reviews.length > 0
+            ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+            : 0
+        const finalrating = Math.round((avgRating + Number.EPSILON) * 2) / 2
+        return {
+          ...doc,
+          reviews,
+          finalrating,
+          isPurchased: purchasedproductIds.includes(doc.id),
+          image: doc.image as Media,
+          tenant: doc.tenant as Tenant & { image: Media | null }
+        }
+      })
     }
-  })
-}
   })
 });

@@ -1,33 +1,40 @@
 import type { CollectionConfig } from 'payload'
-
-export const Categories:CollectionConfig ={
-    admin:{
-        useAsTitle:"name"
+import { isSuperAdmin } from '@/lib/access'
+export const Categories: CollectionConfig = {
+    admin: {
+        useAsTitle: "name",
+         hidden:({user})=> !isSuperAdmin(user)
     },
-    slug:"categories",
-    fields:[
+    access: {
+        read: () => true,
+        create: ({ req }) => isSuperAdmin(req.user),
+        update: ({ req }) => isSuperAdmin(req.user),
+        delete: ({ req }) => isSuperAdmin(req.user)
+    },
+    slug: "categories",
+    fields: [
         {
-            name:"name",
-            type:"text",
-            required:true
+            name: "name",
+            type: "text",
+            required: true
         },
         {
-            name:"slug",
-            type:"text",
-            required:true,
-            unique:true,
-            index:true,
-        },{
-            name:"parent",
-            type:"relationship",
-            relationTo:"categories",
-            hasMany:false
-        },{
-            name:"subcategories",
-            type:"join",
-            collection:"categories",
-            on:"parent",
-            hasMany:true
+            name: "slug",
+            type: "text",
+            required: true,
+            unique: true,
+            index: true,
+        }, {
+            name: "parent",
+            type: "relationship",
+            relationTo: "categories",
+            hasMany: false
+        }, {
+            name: "subcategories",
+            type: "join",
+            collection: "categories",
+            on: "parent",
+            hasMany: true
         }
     ]
 }

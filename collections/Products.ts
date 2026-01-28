@@ -1,9 +1,18 @@
+import { isSuperAdmin } from '@/lib/access'
+import { Tenant } from '@/payload-types';
 import type { CollectionConfig } from 'payload'
 
 export const Products: CollectionConfig = {
     slug: "products",
-        admin:{
-        useAsTitle:"name"
+    admin: {
+        useAsTitle: "name"
+    },
+    access: {
+        create: ({ req }) => {
+            if (isSuperAdmin(req.user)) true;
+            const tenant = req.user?.tenants?.[0]?.tenant as Tenant
+            return Boolean(tenant.stripeDetailsSumbitted)
+        }
     },
     fields: [
         {
@@ -27,15 +36,15 @@ export const Products: CollectionConfig = {
             name: "image",
             type: "upload",
             relationTo: "media",
-             required:true,
-        }, 
+            required: true,
+        },
         {
-            name:"additional images",
-            type:"upload",
-            relationTo:"media",
-            hasMany:true,
-            required:true,
-             admin: {
+            name: "additional images",
+            type: "upload",
+            relationTo: "media",
+            hasMany: true,
+            required: true,
+            admin: {
                 description: "Atleast add 1 image for product validation."
             },
         },
@@ -49,11 +58,17 @@ export const Products: CollectionConfig = {
             type: "relationship",
             relationTo: "tags",
             hasMany: true
+        }, {
+            name: "review",
+            type: "relationship",
+            relationTo: "reviews",
+            hasMany: true,
         },{
-            name:"review",
-            type:"relationship",
-            relationTo:"reviews",
-            hasMany:true,
+            name:"content",
+            type:"textarea",
+            admin:{
+                description:"Protected content only visible to customers after purchase.Add product documentaions and bonus material.Support markdown formatting"
+            }
         }
     ]
 }

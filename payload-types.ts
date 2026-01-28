@@ -178,6 +178,9 @@ export interface Tenant {
    * this is subdomain for the store (eg:[sambid].vercel.app)
    */
   slug: string;
+  /**
+   * Stripe account ID associated with ur shop.
+   */
   stripeAccountId: string;
   /**
    * You cannot create products until you submut your stripe details
@@ -242,6 +245,10 @@ export interface Product {
   refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refund') | null;
   tags?: (string | Tag)[] | null;
   review?: (string | Review)[] | null;
+  /**
+   * Protected content only visible to customers after purchase.Add product documentaions and bonus material.Support markdown formatting
+   */
+  content?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -278,6 +285,9 @@ export interface Order {
   name: string;
   user: string | User;
   product: string | Product;
+  /**
+   * stripe Checkout session associated with this order.
+   */
   stripeCheckoutSessionid: string;
   updatedAt: string;
   createdAt: string;
@@ -455,6 +465,7 @@ export interface ProductsSelect<T extends boolean = true> {
   refundPolicy?: T;
   tags?: T;
   review?: T;
+  content?: T;
   updatedAt?: T;
   createdAt?: T;
 }
