@@ -4,6 +4,7 @@ import { Media, Tenant } from "@/payload-types";
 import { TRPCError } from "@trpc/server";
 import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
+import { generateTenantUrl } from "@/lib/utils";
 export const checkOutRouter = createTRPCRouter({
     verify: protectedProcedure.mutation(async ({ ctx, input }) => {
         const user = await ctx.payload.findByID({
@@ -110,10 +111,11 @@ export const checkOutRouter = createTRPCRouter({
             }))
         const totalAmount = products.docs.reduce((acc, item) => acc + item.price * 100, 0)
         const platformfee = Math.round(totalAmount * (10 / 100));
+        let domain =generateTenantUrl(input.tenantSlug);
         const checkout = await stripe.checkout.sessions.create({
             customer_email: ctx.session.user.email,
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenant.slug}/checkout?success=true`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenant.slug}/checkout?success=false`,
+            success_url: `${domain}/checkout?success=true`,
+            cancel_url: `${domain}/checkout?success=false`,
             line_items: lineItems,
             invoice_creation: {
                 enabled: true

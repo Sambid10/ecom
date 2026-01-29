@@ -80,7 +80,7 @@ export default function Footer({ isTenant = false,slug }: {
                 <div className="flex gap-2 items-center">
                     <h1 className="text-sm text-gray-800">Powered By:</h1>
                  
-                        {isTenant ? <Link prefetch href={"/"}>
+                        {isTenant ? <Link prefetch href={process.env.NEXT_PUBLIC_APP_URL!}>
                             <h1 className='font-dance font-semibold text-2xl md:text-2xl '>
                                 K-Shopify
                             </h1>
