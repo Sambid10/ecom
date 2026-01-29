@@ -12,8 +12,27 @@ import { Check, Star } from "lucide-react"
 import { Progress } from "../progress"
 import Loading from "../Loading/Loading"
 import { Button } from "../button"
+import type {
+  SerializedEditorState,
+  SerializedLexicalNode,
+} from "lexical"
+function normalizeLexicalState(
+  state: unknown
+): SerializedEditorState<SerializedLexicalNode> {
+  return state as SerializedEditorState<SerializedLexicalNode>
+}
+const emptyEditorState: SerializedEditorState<SerializedLexicalNode> = {
+  root: {
+    type: "root",
+    format: "",
+    indent: 0,
+    version: 1,
+    direction: "ltr",
+    children: [],
+  },
+}
 import StarPicker from "../OrderProductView/StarPicker"
-
+import { RichText } from "@payloadcms/richtext-lexical/react"
 // CartButton dynamically imported with no SSR
 const CartButton = dynamic(() => import("../CartButton/CartButton"), {
   ssr: false,
@@ -147,7 +166,16 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
 
               <div className="py-4 px-2">
                 <h1 className="font-medium mb-1">Product Description:</h1>
-                <p className="text-gray-800 text-sm">{data.product.description}</p>
+                <RichText
+                  data={
+                    data.product.description
+                      ? normalizeLexicalState(data.product.description)
+                      : emptyEditorState
+                  }
+                  className="text-gray-800 text-sm mt-2"
+                />
+
+
               </div>
             </div>
           </div>
@@ -211,10 +239,10 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
         </div>
       </div>
       <div className="w-full lg:max-w-300 p-6 h-fit mt-6 mx-auto relative bg-white rounded-md border border-gray-800">
-     
-          <h1 className="font-medium mb-8">
-                    All Reviews ({totalReviews})
-                </h1>
+
+        <h1 className="font-medium mb-8">
+          All Reviews ({totalReviews})
+        </h1>
         {
           isLoading ?
             <Loading divclassName="flex justify-start" />

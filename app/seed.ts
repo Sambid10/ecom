@@ -184,36 +184,37 @@ const categories = [
 
 const seed = async () => {
   const payload = await getPayload({ config })
-    // await payload.create({
-    //     collection:"users",
-    //     data:{
-    //         email:"superadmin@gmail.com",
-    //         password:"superadmin",
-    //         roles:["super-admin"],
-    //         username:"superadmin"
-    //     }
-    // })
-for (const category of categories) {
-  const parentCategory = await payload.create({
-    collection: "categories",
-    data: {
-      name: category.name,
-      slug: category.slug,
-      parent: null,
-    },
-  })
-
-  for (const sub of category.subcategories ?? []) {
     await payload.create({
-      collection: "categories",
-      data: {
-        name: sub.name,
-        slug: sub.slug,
-        parent: parentCategory.id,
-      },
+        collection:"users",
+        data:{
+            email:"superadmin@gmail.com",
+            password:"superadmin",
+            roles:["super-admin"],
+            username:"superadmin"
+            
+        }
     })
-  }
-}
+// for (const category of categories) {
+//   const parentCategory = await payload.create({
+//     collection: "categories",
+//     data: {
+//       name: category.name,
+//       slug: category.slug,
+//       parent: null,
+//     },
+//   })
+
+//   for (const sub of category.subcategories ?? []) {
+//     await payload.create({
+//       collection: "categories",
+//       data: {
+//         name: sub.name,
+//         slug: sub.slug,
+//         parent: parentCategory.id,
+//       },
+//     })
+//   }
+// }
 
 }
 await seed()
