@@ -166,14 +166,14 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
 
               <div className="py-4 px-2">
                 <h1 className="font-medium mb-1">Product Description:</h1>
-               <RichText
-  data={
-    data.product.description
-      ? normalizeLexicalState(data.product.description)
-      : emptyEditorState
-  }
-  className="text-gray-800 text-sm mt-2"
-/>
+                <RichText
+                  data={
+                    data.product.description
+                      ? normalizeLexicalState(data.product.description)
+                      : emptyEditorState
+                  }
+                  className="text-gray-800 text-sm mt-2"
+                />
 
 
               </div>
