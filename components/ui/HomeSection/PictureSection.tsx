@@ -46,7 +46,7 @@ export default function PictureSection() {
         // placeholder until first random picks
         <div className="w-full h-full rounded-xl bg-background aspect-16/13 sm:aspect-16/10  md:aspect-22/8 " />
       ) : (
-        <img
+        <Image
         loading='lazy'
         fetchPriority='high' 
           alt="pic"
