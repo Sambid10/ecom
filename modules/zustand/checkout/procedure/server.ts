@@ -112,8 +112,8 @@ export const checkOutRouter = createTRPCRouter({
         const platformfee = Math.round(totalAmount * (10 / 100));
         const checkout = await stripe.checkout.sessions.create({
             customer_email: ctx.session.user.email,
-            success_url: `${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/tenants/${tenant.slug}/checkout?success=true`,
-            cancel_url: `${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/tenants/${tenant.slug}/checkout?success=false`,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenant.slug}/checkout?success=true`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenant.slug}/checkout?success=false`,
             line_items: lineItems,
             invoice_creation: {
                 enabled: true

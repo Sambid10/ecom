@@ -69,9 +69,9 @@ export default function CheckoutView({ slug }: { slug: string }) {
 
       clearCart();
       setStates({ cancel: false, success: false })
-
-      queryClient.invalidateQueries(trpc.orders.getMany.queryFilter())
       router.replace("/library")
+      queryClient.invalidateQueries(trpc.orders.getMany.queryFilter())
+
 
     }
   }, [states.success, clearCart, setStates, queryClient, trpc.orders.getMany, router])
