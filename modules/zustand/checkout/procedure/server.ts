@@ -63,6 +63,10 @@ export const checkOutRouter = createTRPCRouter({
                         "tenant.slug": {
                             equals: input.tenantSlug
                         }
+                    }, {
+                        isArchived: {
+                            not_equals: true,
+                        }
                     }
                 ]
             }
@@ -105,7 +109,7 @@ export const checkOutRouter = createTRPCRouter({
                 }
             }))
         const totalAmount = products.docs.reduce((acc, item) => acc + item.price * 100, 0)
-        const platformfee = Math.round(totalAmount * (10/100));
+        const platformfee = Math.round(totalAmount * (10 / 100));
         const checkout = await stripe.checkout.sessions.create({
             customer_email: ctx.session.user.email,
             success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenant.slug}/checkout?success=true`,
@@ -118,11 +122,11 @@ export const checkOutRouter = createTRPCRouter({
             metadata: {
                 userId: ctx.session.user.id
             },
-            payment_intent_data:{
-                application_fee_amount:platformfee
+            payment_intent_data: {
+                application_fee_amount: platformfee
             }
-        },{
-            stripeAccount:tenant.stripeAccountId
+        }, {
+            stripeAccount: tenant.stripeAccountId
         })
         if (!checkout.url) {
             throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "something bad happend." })
@@ -141,9 +145,16 @@ export const checkOutRouter = createTRPCRouter({
             collection: "products",
             depth: 2,
             where: {
-                id: {
-                    in: input.ids
-                }
+                and: [{
+                    id: {
+                        in: input.ids
+                    }
+                }, {
+                    isArchived: {
+                        not_equals: true
+                    }
+                }]
+
             }
         });
 

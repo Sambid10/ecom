@@ -16,7 +16,10 @@ export const Products: CollectionConfig = {
                 return false
             }
             return Boolean(tenant.stripeDetailsSumbitted)
-        }
+        },
+        delete:({req})=>
+            isSuperAdmin(req.user)
+        
     },
     fields: [
         {
@@ -72,6 +75,14 @@ export const Products: CollectionConfig = {
             type:"textarea",
             admin:{
                 description:"Protected content only visible to customers after purchase.Add product documentaions and bonus material.Support markdown formatting"
+            }
+        },{
+            name:"isArchived",
+            label:"Archive",
+            defaultValue:false,
+            type:"checkbox",
+            admin:{
+                description:"If checked this product will be archived."
             }
         }
     ]

@@ -4,6 +4,7 @@ import * as z from "zod";
 import { Category, Media, Order, Review, Tenant } from "@/payload-types";
 import { sortValues } from "@/hooks/searchParams";
 import { headers as getHeader } from "next/headers";
+import { TRPCError } from "@trpc/server";
 export const productRouter = createTRPCRouter({
   getOne: baseProcedure.input(
     z.object({
@@ -21,6 +22,9 @@ export const productRouter = createTRPCRouter({
         content: false
       }
     })
+    if(product.isArchived){
+      throw new TRPCError({code:"NOT_FOUND",message:"Product not found."})
+    }
     let ispurchasedProduct = false
     if (session.user) {
       const purchasedorder = await ctx.payload.find({
@@ -60,7 +64,11 @@ export const productRouter = createTRPCRouter({
     })
   ).query(async ({ ctx, input }) => {
 
-    const where: Where = {};
+    const where: Where = {
+      isArchived:{
+        not_equals:true
+      }
+    };
     const headers = await getHeader()
     const session = await ctx.payload.auth({ headers })
     // sort
