@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import SignInView from '@/components/views/SigninView'
 import {caller} from "@/trpc/server"
 import { redirect } from 'next/navigation'
@@ -9,4 +10,4 @@ export default async function Signpage() {
   return (
     <SignInView/>
   )
-}
+}/*  */

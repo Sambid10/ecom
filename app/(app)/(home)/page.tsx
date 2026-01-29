@@ -1,3 +1,4 @@
+export const dynamic="force-dynamic"
 import ContainerWrapper from "@/components/ui/containerWrapper/ContainerWrapper";
 import PictureSection from "@/components/ui/HomeSection/PictureSection";
 import NewProductSection from "@/components/ui/HomeSection/NewProductSection";

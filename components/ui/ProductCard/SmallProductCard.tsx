@@ -4,7 +4,6 @@ import React, { useState } from "react"
 interface Props {
     id: string,
     name: string,
-    description: string,
     pic: string | undefined | null,
     authorUsername: string,
     authorImageUrl: string | null | undefined,
@@ -23,7 +22,6 @@ export default function SmallProductCard({
     id,
     authorImageUrl,
     authorUsername,
-    description,
     name,
     pic,
     price,

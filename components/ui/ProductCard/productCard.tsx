@@ -13,7 +13,6 @@ import { useQuery } from "@tanstack/react-query"
 interface Props {
     id: string,
     name: string,
-    description: string,
     pic?: string | null,
     authorUsername: string,
     authorImageUrl?: string | null,

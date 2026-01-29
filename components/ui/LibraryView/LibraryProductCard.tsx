@@ -9,7 +9,6 @@ import { generateTenantUrl } from "@/lib/utils"
 interface Props {
     id: string,
     name: string,
-    description: string,
     pic?: string | null,
     authorUsername: string,
     authorImageUrl?: string | null,

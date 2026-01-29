@@ -1,3 +1,4 @@
+export const dynamic="force-dynamic"
 import { caller, getQueryClient, trpc } from "@/trpc/server"
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import Navbar from "@/components/ui/navbar/navbar"

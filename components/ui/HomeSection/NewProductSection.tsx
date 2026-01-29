@@ -35,7 +35,7 @@ export default function NewProductSection() {
                                 <SmallProductCard
                                     key={product.id}
                                     id={product.id}
-                                    description={product.description!}
+                               
                                     name={product.name}
                                     pic={product.image?.url}
                                     authorUsername={product.tenant.name}
