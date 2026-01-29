@@ -133,7 +133,7 @@ function ProductPageSuspense({ productId, tenantSlug }: { productId: string; ten
                   <img
                     className="h-9 w-9 rounded-full border border-gray-300 object-cover"
                     alt="tenant"
-                    src={tenantdata.image.url ?? "/pictures/avatar.png"}
+                    src={tenantdata.image?.url ?? "/pictures/avatar.png"}
                   />
                   <Link href={`/tenants/${tenantdata.tenant.name}`}>
                     <h1 className="text-base font-medium capitalize text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-700">

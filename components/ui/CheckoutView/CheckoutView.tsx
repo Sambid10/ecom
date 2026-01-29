@@ -120,7 +120,7 @@ export default function CheckoutView({ slug }: { slug: string }) {
                       width={30}
                       alt="tenant's profile pic"
                       className="rounded-full border border-gray-400"
-                      src={prod.tenant.image?.url!}
+                      src={prod.tenant.image?.url ?? "/pictures/avatar.png"}
                     />
                     <h1 className="text-[14px]">{prod.tenant.name}</h1>
                   </div>

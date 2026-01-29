@@ -10,7 +10,7 @@ export const Orders: CollectionConfig = {
     },
     admin: {
         useAsTitle: "name",
-        hidden:({user})=> !isSuperAdmin(user)
+        hidden: ({ user }) => !isSuperAdmin(user)
     },
     fields: [
         {
@@ -33,10 +33,17 @@ export const Orders: CollectionConfig = {
         }, {
             name: "stripeCheckoutSessionid",
             type: "text",
-            admin:{
-                description:"stripe Checkout session associated with this order."
+            admin: {
+                description: "stripe Checkout session associated with this order."
             },
             required: true
+        }, {
+            name: "stripeAccountId",
+            type: "text",
+            admin: {
+                description: "stripe account associated with order"
+            },
+
         }
     ]
 }

@@ -26,7 +26,8 @@ export async function POST(req: Request) {
     }
     console.log("Success!!! HURRRAY!!", event.id)
     const permittedEvents: string[] = [
-        "checkout.session.completed"
+        "checkout.session.completed",
+        "account.updated"
     ]
     const payload = await getPayload({ config: config })
     if (permittedEvents.includes(event.type)) {
@@ -48,9 +49,11 @@ export async function POST(req: Request) {
                     const expandedSession = await stripe.checkout.sessions.retrieve(
                         data.id, {
                         expand: ["line_items.data.price.product"]
+                    }, {
+                        stripeAccount:event.account
                     }
                     )
-                    if (!expandedSession.line_items?.data || expandedSession.line_items.data.length===0) {
+                    if (!expandedSession.line_items?.data || expandedSession.line_items.data.length === 0) {
                         throw new Error("No line items found")
                     }
                     const lineItems = expandedSession.line_items.data as expandedLineItem[]
@@ -60,11 +63,26 @@ export async function POST(req: Request) {
                             data: {
                                 stripeCheckoutSessionid: data.id,
                                 user: user.id,
+                                stripeAccountId:event.account,
                                 product: item.price.product.metadata.id,
                                 name: item.price.product.name
                             }
                         })
                     }
+                    break;
+                case "account.updated":
+                    data = event.data.object as Stripe.Account
+                    await payload.update({
+                        collection: "tenants",
+                        where: {
+                            stripeAccountId: {
+                                equals: data.id
+                            }
+                        },
+                        data: {
+                            stripeDetailsSumbitted: data.details_submitted
+                        }
+                    })
                     break;
                 default:
                     throw new Error("Unhanled event")

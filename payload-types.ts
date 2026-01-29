@@ -227,6 +227,8 @@ export interface Category {
   createdAt: string;
 }
 /**
+ * You must verify your account before selling/creating products.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
@@ -289,6 +291,10 @@ export interface Order {
    * stripe Checkout session associated with this order.
    */
   stripeCheckoutSessionid: string;
+  /**
+   * stripe account associated with order
+   */
+  stripeAccountId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -501,6 +507,7 @@ export interface OrdersSelect<T extends boolean = true> {
   user?: T;
   product?: T;
   stripeCheckoutSessionid?: T;
+  stripeAccountId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

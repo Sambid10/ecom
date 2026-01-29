@@ -5,12 +5,16 @@ import type { CollectionConfig } from 'payload'
 export const Products: CollectionConfig = {
     slug: "products",
     admin: {
-        useAsTitle: "name"
+        useAsTitle: "name",
+        description:"You must verify your account before selling/creating products."
     },
     access: {
         create: ({ req }) => {
             if (isSuperAdmin(req.user)) true;
             const tenant = req.user?.tenants?.[0]?.tenant as Tenant
+            if(!tenant){
+                return false
+            }
             return Boolean(tenant.stripeDetailsSumbitted)
         }
     },

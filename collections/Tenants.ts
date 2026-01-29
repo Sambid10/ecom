@@ -46,6 +46,9 @@ export const Tenants: CollectionConfig = {
         },{
             name:"stripeDetailsSumbitted",
             type:"checkbox",
+                access:{
+                update:({req})=>isSuperAdmin(req.user)
+            },
             admin:{
                
                 description:"You cannot create products until you submut your stripe details"

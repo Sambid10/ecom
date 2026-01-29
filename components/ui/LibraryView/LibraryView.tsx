@@ -48,7 +48,11 @@ export function LibraryView() {
   const totalPages = Math.ceil(data.totalDocs / totalLimit)
 
   if (data.docs.length === 0) {
-    return <NoProduct />
+    return (
+    <div className='h-[50vh]'>
+ <NoProduct />
+    </div>
+    )
   }
 
   return (
