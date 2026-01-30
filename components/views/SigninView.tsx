@@ -82,7 +82,6 @@ export default function SignInView() {
         <Image
           src="/pictures/sign1.jpg"
           fill
-          priority
           alt="signinpage"
           className="object-contain"
         />
