@@ -5,6 +5,7 @@ import { buildConfig } from "payload";
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { fileURLToPath } from "url";
 import sharp from "sharp";
+import {vercelBlobStorage} from "@payloadcms/storage-vercel-blob"
 import type { Config } from './payload-types'
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
@@ -48,5 +49,13 @@ export default buildConfig({
       },
       userHasAccessToAllTenants:(user)=>isSuperAdmin(user)
     }),
+    vercelBlobStorage({
+      enabled:true,
+      clientUploads:true,
+      collections:{
+        media:true
+      },
+      token:process.env.BLOB_READ_WRITE_TOKEN
+    })
   ],
 });
