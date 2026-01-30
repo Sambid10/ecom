@@ -52,7 +52,7 @@ function PaginationLink({
   return (
     // @ts-ignore
     <Link
-    prefetch
+   
       aria-current={isActive ? "page" : undefined}
       data-slot="pagination-link"
       data-active={isActive}

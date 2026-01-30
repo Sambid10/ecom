@@ -38,7 +38,7 @@ export default function TenantNavbar({ tenantSlug }: {
             <div className='relative h-full max-w-360 mx-auto px-4 flex items-center justify-between'>
                 {/* Logo */}
                 <Link 
-                prefetch
+              
                 href={"/"}>                     <h1 className='font-dance capitalize font-semibold text-2xl md:text-3xl bg-clip-text text-transparent bg-linear-to-r from-[#000000] to-gray-800'>
                     {tenantdata.tenant.name}'s K-Shopify                     </h1>
                 </Link>
@@ -74,7 +74,7 @@ export default function TenantNavbar({ tenantSlug }: {
                                         </div>
                                         <div className='border-t border-gray-800  w-full'>
                                             <Link
-                                            prefetch
+                                           
                                                 href={"/library"}
                                                 className='hover:bg-gray-200 w-full  flex items-center gap-2 rounded-b-md px-4'
                                             >
@@ -89,7 +89,7 @@ export default function TenantNavbar({ tenantSlug }: {
                             </div>
 
                             <Link
-                            prefetch
+                       
                                 href={"/admin"}
                                 className='hidden bg-linear-to-r rounded-full h-10 w-fit px-3 border border-gray-600 lg:flex items-center gap-2 justify-center from-[#121221] to-stone-700 text-white'
                             >

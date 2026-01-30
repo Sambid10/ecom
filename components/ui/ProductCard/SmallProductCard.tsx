@@ -43,7 +43,7 @@ export default function SmallProductCard({
             onMouseLeave={() => setHoveredId(null)}
             className="relative bg-white">
             <Link
-            prefetch
+          
                 href={`/tenants/${authorUsername}/product/${id}`}
 
             >
