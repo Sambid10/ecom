@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/themes/theme-provider";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "@/components/ui/sonner";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import NextTopLoader from 'nextjs-toploader';
 const noto = Noto_Sans({
   subsets: ["latin"],
 });
@@ -36,7 +37,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TRPCReactProvider>
-            <NuqsAdapter>
+            <NuqsAdapter> 
+              <NextTopLoader
+              color="red"
+              height={2}
+              />
               {children}
             </NuqsAdapter>
 
